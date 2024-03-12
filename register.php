@@ -1,3 +1,51 @@
+<?php
+include_once("./backend/database.php");
+
+if(isset($_POST['btn'])){
+    $name = $_POST["name"];
+    $phone = $_POST["phone"];
+    $email = $_POST["email"];
+    $pasword = $_POST["password"];
+    
+    // Check if the directory exists, if not, create it
+    $uploadDirectory = "./uploads/";
+    if (!is_dir($uploadDirectory)) {
+        mkdir($uploadDirectory, 0777, true); // create directory with full permissions
+    }
+
+    // Handle file upload
+    $file = $_FILES['photo'];
+    $fileName = $file['name'];
+    $fileTmpName = $file['tmp_name'];
+    $fileSize = $file['size'];
+    $fileError = $file['error'];
+
+    // Get file extension
+    $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+    // Generate a unique file name to prevent overwriting files with the same name
+    $newFileName = uniqid('', true) . '.' . $fileExt;
+
+    // Specify the destination directory for the uploaded file
+    $destination = $uploadDirectory . $newFileName;
+
+    // Move the uploaded file to the destination directory
+    if (move_uploaded_file($fileTmpName, $destination)) {
+        // Insert data into the database
+        $q = "INSERT INTO register(u_name, u_phone, u_email, u_password, u_photo) VALUES ('$name', '$phone', '$email', '$pasword', '$newFileName')";
+        if (mysqli_query($con, $q)) {
+            echo "<script>alert('New record created successfully')</script>";
+            header("Location: login.php");
+            exit();
+        } else {
+            echo "Error: ". $q. "<br>". mysqli_error($con);
+        }
+    } else {
+        echo "Error uploading file";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +55,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/2aec9589fd.js" crossorigin="anonymous"></script>
 </head>
+
 
 <body>
     <?php
@@ -94,7 +143,7 @@
                                     </div>
                                     <p style="padding-left: 45px;" id="file_err"></p>
                                     <div class="d-flex justify-content-start mb-2 mb-lg-2">
-                                        <button type="text" class="btn btn-primary btn-lg" name="btn">Register</button>
+                                        <button type="submit" class="btn btn-primary btn-lg" name="btn">Register</button>
                                     </div>
                                     <p id="completion" style="display: none; color:green;">Registration successfully complete</p>
                                     <p class="mt-3 text-secondary text-center  ">

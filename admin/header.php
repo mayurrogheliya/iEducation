@@ -1,28 +1,40 @@
+<nav class="navbar-expand-lg navbar-light mb-2">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <div class="list-group">
-        <a href="admin.php" class="bg-light list-group-item-action py-3 px-2  d-flex  justify-content-start align-items-center " style="font-size: larger;">
-            <i style="padding-right: 10px; font-size: 25px;" class="fas fa-tachometer-alt"></i>
-            Dashboard
-        </a>
-        <a href="user.php" class="bg-light  list-group-item-action py-3 px-2  d-flex  justify-content-start align-items-center " style="font-size: larger;">
-            <i style="padding-right: 10px; font-size: 25px;" class="fas fa-users"></i>
-            Manage Users
-        </a>
-        <a href="course.php" class="bg-light  list-group-item-action py-3 px-2  d-flex  justify-content-start align-items-center " style="font-size: larger;">
-            <i style="padding-right: 10px; font-size: 25px;" class="fas fa-book"></i>
-            Manage Courses
-        </a>
-        <a href="comments.php" class="bg-light  list-group-item-action py-3 px-2  d-flex  justify-content-start align-items-center " style="font-size: larger;">
-            <i style="padding-right: 10px; font-size: 25px;" class="fas fa-comments"></i>
-            Comments
-        </a>
-        <a href="#" class="bg-light  list-group-item-action py-3 px-2  d-flex  justify-content-start align-items-center " style="font-size: larger;">
-            <i style="padding-right: 10px; font-size: 25px;" class="fas fa-cog"></i>
-            Settings
-        </a>
-        <a href="#" class="bg-light  list-group-item-action py-3 px-2  d-flex  justify-content-start align-items-center " style="font-size: larger;">
-            <i style="padding-right: 10px; font-size: 25px;" class="fas fa-question-circle"></i>
-            Help and
-            Support
-        </a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto d-flex flex-column list-group w-100 ">
+            <li class="nav-item list-group-item">
+                <a class="nav-link" href="admin.php" style="font-size: 20px; ">
+                    <i class="fas fa-tachometer-alt" style="padding-right: 10px; font-size: 25px;"></i>Dashboard
+                </a>
+            </li>
+            <li class="nav-item list-group-item">
+                <a class="nav-link" href="user.php" style="font-size: 20px;">
+                    <i class="fas fa-users" style="padding-right: 10px; font-size: 25px;"></i>Manage Users
+                </a>
+            </li>
+            <li class="nav-item list-group-item">
+                <a class="nav-link" href="course.php" style="font-size: 20px;">
+                    <i class="fas fa-book" style="padding-right: 10px; font-size: 25px;"></i>Manage Courses
+                </a>
+            </li>
+            <li class="nav-item list-group-item">
+                <a class="nav-link" href="comments.php" style="font-size: 20px;">
+                    <i class="fas fa-comments" style="padding-right: 10px; font-size: 25px;"></i>Comments
+                </a>
+            </li>
+            <li class="nav-item list-group-item">
+                <a class="nav-link" href="#" style="font-size: 20px;">
+                    <i class="fas fa-cog" style="padding-right: 10px; font-size: 25px;"></i>Settings
+                </a>
+            </li>
+            <li class="nav-item list-group-item">
+                <a class="nav-link" href="#" style="font-size: 20px;">
+                    <i class="fas fa-question-circle" style="padding-right: 10px; font-size: 25px;"></i>Help and Support
+                </a>
+            </li>
+        </ul>
     </div>
+</nav>

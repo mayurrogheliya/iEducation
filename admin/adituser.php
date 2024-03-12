@@ -1,72 +1,113 @@
+<?php
+include_once("../backend/database.php");
+
+// Check if email parameter is provided in the URL
+if (isset($_GET['email'])) {
+    $email = $_GET['email'];
+
+    // Fetch user data from the database based on the provided email
+    $query = "SELECT * FROM register WHERE u_email = '$email'";
+    $result = mysqli_query($con, $query);
+
+    // Check if user exists
+    if (mysqli_num_rows($result) == 1) {
+        $row = mysqli_fetch_assoc($result);
+
+        // Check if the form is submitted
+        if (isset($_POST['update'])) {
+            // Retrieve updated form data
+            $uname = $_POST['uname'];
+            $uphone = $_POST['uphone'];
+            $upassword = $_POST['upassword'];
+
+            // Check if a new image file is uploaded
+            if ($_FILES['uimage']['size'] > 0) {
+                // Delete the old image file
+                $old_image_path = "../uploads/" . $row['u_photo'];
+                if (file_exists($old_image_path)) {
+                    unlink($old_image_path); // Delete the file
+                }
+
+                // Upload the new image file
+                $image_name = $_FILES['uimage']['name'];
+                $image_tmp = $_FILES['uimage']['tmp_name'];
+                $image_path = "../uploads/" . $image_name;
+                move_uploaded_file($image_tmp, $image_path);
+
+                // Update user information in the database with the new image path
+                $update_query = "UPDATE register SET u_name='$uname', u_phone='$uphone', u_password='$upassword', u_photo='$image_name' WHERE u_email='$email'";
+            } else {
+                // Update user information in the database without changing the image path
+                $update_query = "UPDATE register SET u_name='$uname', u_phone='$uphone', u_password='$upassword' WHERE u_email='$email'";
+            }
+
+            $update_result = mysqli_query($con, $update_query);
+
+            // Check if update was successful
+            if ($update_result) {
+                echo "User information updated successfully";
+                // Redirect to user.php or any other page
+                header("Location: user.php");
+            } else {
+                echo "Error updating user information: " . mysqli_error($con);
+            }
+        }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Edit User</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/2aec9589fd.js" crossorigin="anonymous"></script>
     <style>
         .rounded-img {
-            border-radius: 50%;
-            width: 50px;
-            height: 100px;
-            width: 100px;
+            /* border-radius: 50%; */
+            width: 80px;
+            height: 80px;
         }
     </style>
 </head>
-
 <body>
     <?php
     include_once("navbar.php")
     ?>
-
     <div class="container-fluid mt-2">
         <div class="row">
-            <div class="col-md-3 mb-2 bg-light">
-                <?php
-                include_once("header.php")
-                ?>
+            <div class="col-md-3">
+                <?php include_once("header.php"); ?>
             </div>
-
             <div class="col-md-9">
-                <form method="post" onsubmit="return check()">
+                <form method="post" enctype="multipart/form-data" onsubmit="return check()">
                     <div class="mb-3">
                         <label for="uname" class="form-label">Enter user name</label>
-                        <input type="text" class="form-control" id="uname" value="saktiman">
+                        <input type="text" class="form-control" id="uname" name="uname" value="<?php echo $row['u_name']; ?>">
                         <p id="uname_err"></p>
                     </div>
                     <div class="mb-3">
                         <label for="uphone" class="form-label">Enter user phone number</label>
-                        <input type="text" class="form-control" id="uphone" value="780632541">
+                        <input type="text" class="form-control" id="uphone" name="uphone" value="<?php echo $row['u_phone']; ?>">
                         <p id="uphone_err"></p>
                     </div>
                     <div class="mb-3">
                         <label for="uemail" class="form-label">Enter user email</label>
-                        <input type="text" class="form-control" id="uemail" value="Sakti123@gmail.com" disabled>
+                        <input type="text" class="form-control" id="uemail" name="uemail" value="<?php echo $row['u_email']; ?>" disabled>
                         <p id="uemail_err"></p>
                     </div>
                     <div class="mb-3">
                         <label for="upassword" class="form-label">Enter user password</label>
-                        <input type="password" class="form-control" id="upassword" value="hello12345">
+                        <input type="password" class="form-control" id="upassword" name="upassword" value="<?php echo $row['u_password']; ?>">
                         <input type="checkbox" class="mt-2" onclick="show()"> Show Password
                         <p id="upassword_err"></p>
                     </div>
                     <div class="mb-3">
-                        <label for="payment" class="form-label">Payment</label>
-                        <select id="payment">
-                            <option selected value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                        <p id="upassword_err"></p>
-                    </div>
-                    <div class="mb-3">
                         <label for="uimage" class="form-label">Select user image</label><br>
-                        <img src="https://cdn4.sharechat.com/compressed_gm_40_img_122041_165b6fec_1701967119774_sc.jpg?tenant=sc&referrer=tag-service&f=774_sc.jpg" alt="User Image" class="rounded-img"><br>
-                        <input type="file" class="mt-2" id="uimage" accept="image/*">
+                        <img src="../uploads/<?php echo $row['u_photo']; ?>" alt="User Image" class="rounded-img"><br>
+                        <input type="file" class="mt-2" id="uimage" name="uimage" accept="image/*">
                     </div>
-                    <button type="submit" name="add" class="btn btn-primary ">Add User</button>
+                    <button type="submit" name="update" class="btn btn-primary ">Update User</button>
                 </form>
             </div>
         </div>
@@ -77,6 +118,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="../javascript/admin.js"></script>
 
+    
     <script>
         function show() {
             var x = document.getElementById("upassword");
@@ -173,5 +215,12 @@
         }
     </script>
 </body>
-
 </html>
+<?php
+    } else {
+        echo "User not found";
+    }
+    } else {
+        echo "Email parameter not provided";
+}
+?>

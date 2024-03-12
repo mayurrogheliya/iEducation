@@ -15,16 +15,3 @@ mysqli_select_db($con,"iEducation");
 // else{
 //     echo "Error creating table: ". mysqli_error($con);
 // }
-
-$name = $_POST["name"];
-$phone = $_POST["phone"];
-$email = $_POST["email"];
-$pasword = $_POST["password"];
-
-$q = "insert into register(u_name,u_phone,u_email,u_password) values('$name','$phone','$email','$pasword')";
-
-if (mysqli_query($con, $q)) {
-    echo "New record created successfully";
-} else {
-    echo "Error: ". $q. "<br>". mysqli_error($con);
-}

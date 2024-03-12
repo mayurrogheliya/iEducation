@@ -1,3 +1,55 @@
+<?php
+// Include the database connection file
+include_once("../backend/database.php");
+
+// Check if the form is submitted
+if (isset($_POST['add'])) {
+    // Retrieve form data
+    $uname = $_POST['uname'];
+    $uphone = $_POST['uphone'];
+    $uemail = $_POST['uemail'];
+    $upassword = $_POST['upassword'];
+    
+    // Check if the directory exists, if not, create it
+    $uploadDirectory = "../uploads/";
+    if (!is_dir($uploadDirectory)) {
+        mkdir($uploadDirectory, 0777, true); // create directory with full permissions
+    }
+
+    // Handle file upload
+    $file = $_FILES['uimage'];
+    $fileName = $file['name'];
+    $fileTmpName = $file['tmp_name'];
+    $fileSize = $file['size'];
+    $fileError = $file['error'];
+
+    // Get file extension
+    $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+    // Generate a unique file name to prevent overwriting files with the same name
+    $newFileName = uniqid('', true) . '.' . $fileExt;
+
+    // Specify the destination directory for the uploaded file
+    $destination = $uploadDirectory . $newFileName;
+
+    // Move the uploaded file to the destination directory
+    if (move_uploaded_file($fileTmpName, $destination)) {
+        // Insert data into the database
+        $q = "INSERT INTO register(u_name, u_phone, u_email, u_password, u_photo) VALUES ('$name', '$phone', '$email', '$pasword', '$newFileName')";
+        if (mysqli_query($con, $q)) {
+            echo "<script>alert('New record created successfully')</script>";
+            header("Location: login.php");
+            exit();
+        } else {
+            echo "Error: ". $q. "<br>". mysqli_error($con);
+        }
+    } else {
+        echo "Error uploading file";
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,46 +68,38 @@
 
     <div class="container-fluid mt-2">
         <div class="row">
-            <div class="col-md-3 mb-2 bg-light">
+            <div class="col-md-3">
                 <?php
                 include_once("header.php")
                 ?>
             </div>
 
             <div class="col-md-9">
-                <form method="post" onsubmit="return check()">
+                <form method="post" action="adduser.php" onsubmit="return check()">
                     <div class="mb-3">
                         <label for="uname" class="form-label">Enter user name</label>
-                        <input type="text" class="form-control" id="uname">
+                        <input type="text" class="form-control" name="uname" id="uname">
                         <p id="uname_err"></p>
                     </div>
                     <div class="mb-3">
                         <label for="uphone" class="form-label">Enter user phone number</label>
-                        <input type="text" class="form-control" id="uphone">
+                        <input type="text" class="form-control" name="uphone" id="uphone">
                         <p id="uphone_err"></p>
                     </div>
                     <div class="mb-3">
                         <label for="uemail" class="form-label">Enter user email</label>
-                        <input type="text" class="form-control" id="uemail">
+                        <input type="text" class="form-control" id="uemail" name="uemail">
                         <p id="uemail_err"></p>
                     </div>
                     <div class="mb-3">
                         <label for="upassword" class="form-label">Enter user password</label>
-                        <input type="password" class="form-control" id="upassword">
+                        <input type="password" class="form-control" name="upassword" id="upassword"> 
                         <input type="checkbox" class="mt-2" onclick="show()"> Show Password
                         <p id="upassword_err"></p>
                     </div>
                     <div class="mb-3">
-                        <label for="payment" class="form-label">Payment</label>
-                        <select id="payment">
-                            <option value="Yes">Yes</option>
-                            <option selected value="No">No</option>
-                        </select>
-                        <p id="upassword_err"></p>
-                    </div>
-                    <div class="mb-3">
                         <label for="uimage" class="form-label">Select user image</label><br>
-                        <input type="file" id="uimage" accept="image/*">
+                        <input type="file" name="uimage" id="uimage" accept="image/*">
                         <p id="uimage_err"></p>
                     </div>
                     <button type="submit" name="add" class="btn btn-primary ">Add User</button>
