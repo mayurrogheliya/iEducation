@@ -18,7 +18,7 @@
                         <div class="card-body p-3 p-md-4 px-xl-5">
                             <p class="text-center h1 fw-bold mb-4 mx-1 mx-md-4">Login</p>
                             <h2 class="fs-6 fw-normal text-center text-secondary mb-4">Sign in to your account</h2>
-                            <form method="post" action="login.php">
+                            <form method="post" action="login.php" onsubmit="return loginvalidate()">
                                 <div class="row gy-2 overflow-hidden">
                                     <div class="col-12">
                                         <div class="form-floating">
@@ -57,6 +57,9 @@
             </div>
         </div>
     </section>
+
+    <script src="./javascript//validation.js"></script>
+
 </body>
 
 </html>

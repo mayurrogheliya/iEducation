@@ -5,17 +5,17 @@ include_once("../backend/database.php");
 // Check if the form is submitted
 if (isset($_POST['add'])) {
     // Retrieve form data
-    $cname = $_POST['cname'];
-    $cdesc = $_POST['cdesc'];
+    $title = $_POST['title'];
+    $desc = $_POST['desc'];
 
     // Check if the directory exists, if not, create it
-    $uploadDirectory = "../CourseImage/";
+    $uploadDirectory = "../uploads/";
     if (!is_dir($uploadDirectory)) {
         mkdir($uploadDirectory, 0777, true); // create directory with full permissions
     }
 
     // Handle file upload
-    $file = $_FILES['cimage'];
+    $file = $_FILES['image'];
     $fileName = $file['name'];
     $fileTmpName = $file['tmp_name'];
     $fileSize = $file['size'];
@@ -33,10 +33,10 @@ if (isset($_POST['add'])) {
     // Move the uploaded file to the destination directory
     if (move_uploaded_file($fileTmpName, $destination)) {
         // Insert data into the database
-        $q = "INSERT INTO course(c_name, c_desc, c_image) VALUES ('$cname','$cdesc','$newFileName')";
+        $q = "INSERT INTO about(title, description, image) VALUES ('$title', '$desc', '$newFileName')";
         if (mysqli_query($con, $q)) {
             echo "<script>alert('New record created successfully')</script>";
-            header("Location: course.php");
+            header("Location: about.php");
             exit();
         } else {
             echo "Error: " . $q . "<br>" . mysqli_error($con);
@@ -60,7 +60,7 @@ if (isset($_POST['add'])) {
 
 <body>
     <?php
-    include_once("navbar.php")
+    include_once("navbar.php");
     ?>
 
     <div class="container-fluid mt-2">
@@ -72,23 +72,23 @@ if (isset($_POST['add'])) {
             </div>
 
             <div class="col-md-9">
-                <form method="post" action="addcourse.php" onsubmit="return check()" enctype="multipart/form-data">
+                <form method="post" action="addabout.php" onsubmit="return check()" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <label for="cname" class="form-label">Enter course name</label>
-                        <input type="text" class="form-control" id="cname" name="cname">
-                        <p id="cname_err"></p>
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" name="title" id="title">
+                        <p id="title_err"></p>
                     </div>
                     <div class="mb-3">
-                        <label for="cimage" class="form-label">Select course image</label><br>
-                        <input type="file" id="cimage" name="cimage" accept="image/*">
-                        <p id="cimage_err"></p>
+                        <label for="desc" class="form-label">Description</label>
+                        <textarea class="form-control" name="desc" id="desc" rows="3"></textarea>
+                        <p id="desc_err"></p>
                     </div>
                     <div class="mb-3">
-                        <label for="cdesc" class="form-label">Enter course description</label>
-                        <textarea class="form-control" id="cdesc" name="cdesc" rows="3"></textarea>
-                        <p id="cdesc_err"></p>
+                        <label for="image" class="form-label">Select image</label><br>
+                        <input type="file" name="image" id="image" accept="image/*">
+                        <p id="image_err"></p>
                     </div>
-                    <button type="submit" name="add" class="btn btn-primary ">Add Course</button>
+                    <button type="submit" name="add" class="btn btn-primary ">Add</button>
                 </form>
             </div>
         </div>
@@ -100,56 +100,57 @@ if (isset($_POST['add'])) {
     <script src="../javascript/admin.js"></script>
 
     <script>
-        var cname = document.getElementById('cname');
-        var cimage = document.getElementById('cimage');
-        var cdesc = document.getElementById('cdesc');
+        var title = document.getElementById('title');
+        var image = document.getElementById('image');
+        var desc = document.getElementById('desc');
 
-        var cname_err = document.getElementById('cname_err');
-        var cimage_err = document.getElementById('cimage_err');
-        var cdesc_err = document.getElementById('cdesc_err');
+        var title_err = document.getElementById('title_err');
+        var image_err = document.getElementById('image_err');
+        var desc_err = document.getElementById('desc_err');
 
         function check() {
-            if (cname.value == "") {
-                cname_err.style.color = 'red';
-                cname_err.innerHTML = 'Please enter course name';
-                cname.style.border = '1px solid red';
-                var cnamer = false;
+            if (title.value == "") {
+                title_err.style.color = 'red';
+                title_err.innerHTML = 'Please enter title';
+                title.style.border = '1px solid red';
+                var namer = false;
             } else {
-                cname_err.innerHTML = "";
-                cname.style.border = "1px solid #e3e6ea";
-                cnamer = true;
+                title_err.innerHTML = "";
+                title.style.border = "1px solid #e3e6ea";
+                namer = true;
             }
 
-            if (cimage.files.length == 0) {
-                cimage_err.style.color = 'red';
-                cimage_err.innerHTML = 'Please select course image';
-                cimage.style.border = '1px solid red';
-                var cimager = false;
+            if (image.files.length == 0) {
+                image_err.style.color = 'red';
+                image_err.innerHTML = 'Please select image';
+                image.style.border = '1px solid red';
+                var imager = false;
             } else {
-                cimage_err.innerHTML = "";
-                cimage.style.border = "1px solid #e3e6ea";
-                cimager = true;
+                image_err.innerHTML = "";
+                image.style.border = "1px solid #e3e6ea";
+                imager = true;
             }
 
-            if (cdesc.value == "") {
-                cdesc_err.style.color = 'red';
-                cdesc_err.innerHTML = 'Please enter course description';
-                cdesc.style.border = '1px solid red';
-                var cdescr = false;
+            if (desc.value == "") {
+                desc_err.style.color = 'red';
+                desc_err.innerHTML = 'Please enter description';
+                desc.style.border = '1px solid red';
+                var descr = false;
             } else {
-                cdesc_err.innerHTML = "";
-                cdesc.style.border = "1px solid #e3e6ea";
-                cdescr = true;
+                desc_err.innerHTML = "";
+                desc.style.border = "1px solid #e3e6ea";
+                descr = true;
             }
 
 
-            if (cnamer == true && cimager == true && cdescr == true) {
+            if (namer == true && imager == true && descr == true) {
                 return true;
             } else {
                 return false;
             }
         }
     </script>
+
 </body>
 
 </html>

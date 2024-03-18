@@ -9,7 +9,7 @@ if (isset($_POST['add'])) {
     $uphone = $_POST['uphone'];
     $uemail = $_POST['uemail'];
     $upassword = $_POST['upassword'];
-    
+
     // Check if the directory exists, if not, create it
     $uploadDirectory = "../uploads/";
     if (!is_dir($uploadDirectory)) {
@@ -35,16 +35,16 @@ if (isset($_POST['add'])) {
     // Move the uploaded file to the destination directory
     if (move_uploaded_file($fileTmpName, $destination)) {
         // Insert data into the database
-        $q = "INSERT INTO register(u_name, u_phone, u_email, u_password, u_photo) VALUES ('$name', '$phone', '$email', '$pasword', '$newFileName')";
+        $q = "INSERT INTO register(u_name, u_phone, u_email, u_password, u_photo) VALUES ('$uname', '$uphone', '$uemail', '$upassword', '$newFileName')";
         if (mysqli_query($con, $q)) {
             echo "<script>alert('New record created successfully')</script>";
-            header("Location: login.php");
+            header("Location: user.php");
             exit();
         } else {
-            echo "Error: ". $q. "<br>". mysqli_error($con);
+            echo "Error: " . $q . "<br>" . mysqli_error($con);
         }
     } else {
-        echo "Error uploading file";
+        echo "Error uploading file $fileError";
     }
 }
 ?>
@@ -75,7 +75,7 @@ if (isset($_POST['add'])) {
             </div>
 
             <div class="col-md-9">
-                <form method="post" action="adduser.php" onsubmit="return check()">
+                <form method="post" action="adduser.php" onsubmit="return check()" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="uname" class="form-label">Enter user name</label>
                         <input type="text" class="form-control" name="uname" id="uname">
@@ -93,7 +93,7 @@ if (isset($_POST['add'])) {
                     </div>
                     <div class="mb-3">
                         <label for="upassword" class="form-label">Enter user password</label>
-                        <input type="password" class="form-control" name="upassword" id="upassword"> 
+                        <input type="password" class="form-control" name="upassword" id="upassword">
                         <input type="checkbox" class="mt-2" onclick="show()"> Show Password
                         <p id="upassword_err"></p>
                     </div>
@@ -122,7 +122,7 @@ if (isset($_POST['add'])) {
                 x.type = "password";
             }
         }
-        
+
         var uname = document.getElementById('uname');
         var uphone = document.getElementById('uphone');
         var uemail = document.getElementById('uemail');

@@ -26,6 +26,11 @@
                 </a>
             </li>
             <li class="nav-item list-group-item">
+                <a class="nav-link" href="about.php" style="font-size: 20px;">
+                    <i class="fas fa-headset" style="padding-right: 10px; font-size: 25px;"></i>About
+                </a>
+            </li>
+            <li class="nav-item list-group-item">
                 <a class="nav-link" href="#" style="font-size: 20px;">
                     <i class="fas fa-cog" style="padding-right: 10px; font-size: 25px;"></i>Settings
                 </a>

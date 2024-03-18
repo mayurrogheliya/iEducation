@@ -1,3 +1,34 @@
+<?php
+// Include the database connection file
+include_once("../backend/database.php");
+
+// Check if the form is submitted
+if (isset($_POST['add'])) {
+    // Retrieve form data
+    $uname = $_POST['uname'];
+    $uphone = $_POST['uphone'];
+    $uemail = $_POST['uemail'];
+    $comment = $_POST['comment'];
+
+    $file = $_FILES['uimage'];
+    $fileName = $file['name'];
+    $fileTmpName = $file['tmp_name'];
+    $fileSize = $file['size'];
+    $fileError = $file['error'];
+
+    // Insert data into the database
+    $q = "INSERT INTO messages(u_name, u_phone, u_email,message) VALUES ('$uname', '$uphone', '$uemail', '$comment')";
+    if (mysqli_query($con, $q)) {
+        echo "<script>alert('New comments added successfully')</script>";
+        header("Location: comments.php");
+        exit();
+    } else {
+        echo "Error: " . $q . "<br>" . mysqli_error($con);
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,25 +54,25 @@
             </div>
 
             <div class="col-md-9">
-                <form method="post" onsubmit="return check()">
+                <form method="post" action="addcommetns.php" onsubmit="return check()">
                     <div class="mb-3">
                         <label for="uname" class="form-label">Enter user name</label>
-                        <input type="text" class="form-control" id="uname">
+                        <input type="text" class="form-control" id="uname" name="uname">
                         <p id="uname_err"></p>
                     </div>
                     <div class="mb-3">
                         <label for="uphone" class="form-label">Enter user phone number</label>
-                        <input type="text" class="form-control" id="uphone">
+                        <input type="text" class="form-control" id="uphone" name="uphone">
                         <p id="uphone_err"></p>
                     </div>
                     <div class="mb-3">
                         <label for="uemail" class="form-label">Enter user email</label>
-                        <input type="text" class="form-control" id="uemail">
+                        <input type="text" class="form-control" id="uemail" name="uemail">
                         <p id="uemail_err"></p>
                     </div>
                     <div class="mb-3">
                         <label for="comment" class="form-label">Enter comment</label>
-                        <textarea class="form-control" id="comment" rows="3"></textarea>
+                        <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
                         <p id="comment_err"></p>
                     </div>
                     <button type="submit" name="add" class="btn btn-primary ">Add Comment</button>
@@ -56,7 +87,6 @@
     <script src="../javascript/admin.js"></script>
 
     <script>
-        
         var uname = document.getElementById('uname');
         var uphone = document.getElementById('uphone');
         var uemail = document.getElementById('uemail');

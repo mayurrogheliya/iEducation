@@ -11,6 +11,10 @@
 <body>
     <?php
     include_once("header.php");
+    include_once("./backend/database.php");
+
+    $q = "SELECT * FROM course";
+    $result = mysqli_query($con, $q);
     ?>
     <section class="py-5 py-xl-8" id="course">
         <div class="container">
@@ -26,56 +30,28 @@
                 </div>
             </div>
             <div class="row row-cols-1 row-cols-md-3 g-4">
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="img/HTML5.png" class="card-img-top cardimage" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">HTML5</h5>
-                            <p class="card-text">HTML5 is a markup language used for structuring and presenting
-                                content
-                                on the World Wide Web. It is the fifth and final
-                                major HTML version that is a World Wide Web Consortium recommendation. The
-                                current
-                                specification is known as the HTML
-                                Living Standard.</p>
-                            <a href="chtml.php" class="btn btn-primary">Learn More</a>
+                <?php
+                // Check if there are any results
+                if (mysqli_num_rows($result) > 0) {
+                    // Loop through each row of the result
+                    while ($row = mysqli_fetch_assoc($result)) {
+                ?>
+                        <div class="col">
+                            <div class="card">
+                                <img src="./CourseImage/<?php echo $row['c_image']; ?>" class="card-img-top cardimage" alt="course image">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $row['c_name']; ?></h5>
+                                    <p class="card-text"><?php echo $row['c_desc']; ?></p>
+                                    <a href="chtml.php" class="btn btn-primary">Learn More</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="img/CSS3.png" class="card-img-top cardimage" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">CSS3</h5>
-                            <p class="card-text">Cascading Style Sheets (CSS) is a style sheet language used for
-                                describing the look and formatting of a document written
-                                in a markup language. CSS3 is a latest standard of css earlier versions(CSS2).
-                                The
-                                main
-                                difference between css2 and css3
-                                is follows − Media Queries. Namespaces.</p>
-                            <a href="#" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="img/java-script.jpg" class="card-img-top cardimage" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">JavaScript</h5>
-                            <p class="card-text">JavaScript, often abbreviated as JS, is a programming language
-                                and
-                                core
-                                technology of the World Wide Web, alongside HTML
-                                and CSS. As of 2023, 98.7% of websites use JavaScript on the client side for
-                                webpage
-                                behavior, often incorporating
-                                third-party libraries.</p>
-                            <a href="#" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                    }
+                } else {
+                    echo "<tr><td colspan='7'>No courses available</td></tr>";
+                }
+                ?>
             </div>
         </div>
     </section>

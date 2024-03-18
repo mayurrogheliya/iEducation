@@ -11,14 +11,17 @@
 
 <body>
     <?php
-    include_once("navbar.php")
+    include_once("navbar.php");
+    include_once("../backend/database.php");
+    $q = "SELECT * FROM messages";
+    $result = mysqli_query($con, $q);
     ?>
 
     <div class="container-fluid mt-2">
         <div class="row">
             <div class="col-md-3">
                 <?php
-                include_once("header.php")
+                include_once("header.php");
                 ?>
             </div>
             <div class="col-md-9">
@@ -34,7 +37,7 @@
                         <table class="table table-bordered overflow-x-scroll ">
                             <thead>
                                 <tr>
-                                    
+
                                     <th>User Name</th>
                                     <th>Email</th>
                                     <th>Phone</th>
@@ -43,17 +46,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>John Doe</td>
-                                    <td>Johan123@gmail.com</td>
-                                    <td>1234567890</td>
-                                    <td>Hello, I have a question.</td>
-                                    <td>
-                                        <a class="btn btn-primary  my-1 " href="aditcomment.php">Adit</a>
-                                        <button class="btn btn-danger my-1 ">Delete</button>
-                                    </td>
-                                </tr>
-                                
+                                <?php
+                                // Check if there are any results
+                                if (mysqli_num_rows($result) > 0) {
+                                    // Loop through each row of the result
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                ?>
+                                        <tr>
+                                            <td><?php echo $row['u_name']; ?></td>
+                                            <td><?php echo $row['u_email']; ?></td>
+                                            <td><?php echo $row['u_phone']; ?></td>
+                                            <td><?php echo $row['message']; ?></td>
+                                            <td>
+                                                <a class="btn btn-primary  my-1 " href="aditcomment.php?email=<?php echo $row['u_email']; ?>">Edit</a>
+                                                <a class="btn btn-danger my-1" href="deletecomments.php?email=<?php echo $row['u_email']; ?>">Delete</a>
+                                            </td>
+                                        </tr>
+                                <?php
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='7'>No comments found</td></tr>";
+                                }
+                                ?>
                             </tbody>
                         </table>
                     </div>

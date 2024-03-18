@@ -1,3 +1,37 @@
+<?php
+include_once("../backend/database.php");
+
+if (isset($_GET['email'])) {
+    $email = $_GET['email'];
+
+    // Fetch user data from the database based on the provided email
+    $query = "SELECT * FROM messages WHERE u_email = '$email'";
+    $result = mysqli_query($con, $query);
+    if (mysqli_num_rows($result) == 1) {
+        $row = mysqli_fetch_assoc($result);
+        if (isset($_POST['update'])) {
+            $name = isset($_POST['uname']) ? $_POST['uname'] : $row['u_name'];
+            $phone = isset($_POST['uphone']) ? $_POST['uphone'] : $row['u_phone'];
+            $mesg = isset($_POST['comment']) ? $_POST['comment'] : $row['message'];
+
+            $update_query = "UPDATE messages SET u_name='$name', u_phone='$phone', message='$mesg' WHERE u_email='$email'";
+            // Debugging: Print out the SQL query
+            echo "Update Query: " . $update_query . "<br>";
+
+            $update_result = mysqli_query($con, $update_query);
+
+            if ($update_result) {
+                echo "Data updated successfully.";
+            } else {
+                // Error handling: Print out any database errors
+                echo "Error updating data: " . mysqli_error($con);
+            }
+        }
+    }
+}
+?>
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,25 +60,25 @@
                 <form method="post" onsubmit="return check()">
                     <div class="mb-3">
                         <label for="uname" class="form-label">Enter user name</label>
-                        <input type="text" class="form-control" id="uname" value="John Doe">
+                        <input type="text" class="form-control" id="uname" class="uname" value="<?php echo $row['u_name']; ?>">
                         <p id="uname_err"></p>
                     </div>
                     <div class="mb-3">
                         <label for="uphone" class="form-label">Enter user phone number</label>
-                        <input type="text" class="form-control" id="uphone" value="1234567890">
+                        <input type="text" class="form-control" id="uphone" class="uphone" value="<?php echo $row['u_phone']; ?>">
                         <p id="uphone_err"></p>
                     </div>
                     <div class="mb-3">
                         <label for="uemail" class="form-label">Enter user email</label>
-                        <input type="text" class="form-control" id="uemail" disabled value="Johan123@gmail.com">
+                        <input type="text" class="form-control" id="uemail" class="uemail" disabled value="<?php echo $row['u_email']; ?>">
                         <p id="uemail_err"></p>
                     </div>
                     <div class="mb-3">
                         <label for="comment" class="form-label">Enter comment</label>
-                        <textarea class="form-control" id="comment" rows="3" >Hello, I have a question.</textarea>
+                        <textarea class="form-control" id="comment" class="comment" rows="3"><?php echo $row['message']; ?></textarea>
                         <p id="comment_err"></p>
                     </div>
-                    <button type="submit" name="add" class="btn btn-primary ">Add Comment</button>
+                    <button type="submit" name="update" class="btn btn-primary ">Edit Comment</button>
                 </form>
             </div>
         </div>

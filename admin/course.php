@@ -18,7 +18,12 @@
 
 <body>
     <?php
-    include_once("navbar.php")
+    include_once("navbar.php");
+    include_once("../backend/database.php");
+
+    // Query to select all course data
+    $q = "SELECT * FROM course";
+    $result = mysqli_query($con, $q);
     ?>
 
     <div class="container-fluid mt-2">
@@ -48,37 +53,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><img src="../img/HTML5.png" alt="User Image" style="min-width: 80px; max-width: 80px; min-height: 80px; max-height: 80px;"></td>
-                                    <td>HTML5</td>
-                                    <td>HTML5 is a markup language used for structuring and presenting
-                                        content
-                                        on the World Wide Web. It is the fifth and final
-                                        major HTML version that is a World Wide Web Consortium recommendation. The
-                                        current
-                                        specification is known as the HTML
-                                        Living Standard</td>
-                                    <td>
-                                        <a class="btn btn-primary  my-1 " href="aditcourse.php">Adit</a>
-                                        <button class="btn btn-danger my-1 ">Delete</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src="../img/CSS3.png" alt="User Image" style="min-width: 80px; max-width: 80px; min-height: 80px; max-height: 80px;"></td>
-                                    <td>CSS3</td>
-                                    <td>Cascading Style Sheets (CSS) is a style sheet language used for
-                                        describing the look and formatting of a document written
-                                        in a markup language. CSS3 is a latest standard of css earlier versions(CSS2).
-                                        The
-                                        main
-                                        difference between css2 and css3
-                                        is follows − Media Queries. Namespaces.</td>
-                                    <div>
-                                        <td>
-                                            <button class="btn btn-primary  my-1 ">Adit</button>
-                                            <button class="btn btn-danger my-1 ">Delete</button>
-                                        </td>
-                                </tr>
+                                <?php
+                                // Check if there are any results
+                                if (mysqli_num_rows($result) > 0) {
+                                    // Loop through each row of the result
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                ?>
+                                        <tr>
+                                            <td><img src="../CourseImage/<?php echo $row['c_image']; ?>" alt="User Image" style="min-width: 80px; max-width: 80px; min-height: 80px; max-height: 80px;"></td>
+                                            <td><?php echo $row['c_name']; ?></td>
+                                            <td><?php echo $row['c_desc']; ?></td>
+                                            <td>
+                                                <a class="btn btn-primary  my-1 " href="aditcourse.php?id=<?php echo $row['c_id']; ?>">Edit</a>
+                                                <a class="btn btn-danger my-1" href="deletecourse.php?id=<?php echo $row['c_id']; ?>">Delete</a>
+                                            </td>
+                                        </tr>
+                                <?php
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='7'>No course found</td></tr>";
+                                }
+                                ?>
                             </tbody>
                         </table>
                     </div>
