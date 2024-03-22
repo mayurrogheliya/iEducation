@@ -62,7 +62,7 @@
                                         while ($row = mysqli_fetch_assoc($result)) {
                                     ?>
                                             <tr>
-                                                <td><img src="../uploads/<?php echo $row['image']; ?>" alt="Image" class="card-img-top" style="max-height: 90px; min-height: 90px;"></td>
+                                                <td><img src="../uploads/<?php echo $row['image']; ?>" alt="Image" class="card-img-top" style="max-width:100px; max-height:100px;"></td>
                                                 <td>
                                                     <?php echo $row['title']; ?>
                                                 </td>
