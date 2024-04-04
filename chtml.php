@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['email'])) {
+    header("location: login.php");
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,17 +18,26 @@
 <body>
     <?php
     include_once("header.php");
+    include_once("./backend/database.php");
+    $cname = $_GET['cname'] ?? '';
+
+    $q1 = "SELECT * FROM course where c_name = '$cname'";
+    $q2 = "SELECT * FROM topic where cname = '$cname'";
+    $result1 = mysqli_query($con, $q1);
+    $result2 = mysqli_query($con, $q2);
+    $t1row = mysqli_fetch_assoc($result1);
+    $t2row = mysqli_fetch_assoc($result2);
     ?>
     <section class="py-5 py-xl-8" id="course">
         <div class="container">
             <div class="course-list">
-                <h2>What do you learn in this HTML course?</h2>
+                <h2>What do you learn in this <?php echo $t1row['c_name']; ?> course?</h2>
                 <ul class="list-group">
-                    <li class="list-group-item">HTML basics</li>
-                    <li class="list-group-item">Semantic HTML</li>
-                    <li class="list-group-item">HTML forms</li>
-                    <li class="list-group-item">HTML5 features</li>
-                    <li class="list-group-item">Responsive design with HTML</li>
+                    <li class="list-group-item"><?php echo $t2row['point1']; ?></li>
+                    <li class="list-group-item"><?php echo $t2row['point2']; ?></li>
+                    <li class="list-group-item"><?php echo $t2row['point3']; ?></li>
+                    <li class="list-group-item"><?php echo $t2row['point4']; ?></li>
+                    <li class="list-group-item"><?php echo $t2row['point5']; ?></li>
                 </ul>
             </div>
             <main class="mt-4">
@@ -70,15 +87,14 @@
                     </div>
                     <div class="form-group mb-2 ">
                         <label for="userReview">Your Review:</label>
-                        <textarea class="form-control" id="userReview" rows="3" placeholder="Enter your review"
-                            required></textarea>
+                        <textarea class="form-control" id="userReview" rows="3" placeholder="Enter your review" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
 
-        
+
     </section>
 
 
