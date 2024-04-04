@@ -1,7 +1,7 @@
 <nav class="navbar border-bottom shadow-sm shadow-sm">
         <span class="mb-0 h1">iEducation</span>
         <div>
-        <button class="btn btn-primary ">Logout</button>
-        <a class="btn btn-primary " href="..">Back to home</a>
+                <a href="logout.php" class="btn btn-primary ">Logout</a>
+                <a href="admin_profile.php" class="btn btn-primary ">Profile</a>
         </div>
 </nav>

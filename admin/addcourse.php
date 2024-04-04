@@ -3,7 +3,7 @@
 include_once("../backend/database.php");
 
 // Check if the form is submitted
-if (isset($_POST['add'])) {
+if (isset($_POST['next1'])) {
     // Retrieve form data
     $cname = $_POST['cname'];
     $cdesc = $_POST['cdesc'];
@@ -36,7 +36,7 @@ if (isset($_POST['add'])) {
         $q = "INSERT INTO course(c_name, c_desc, c_image) VALUES ('$cname','$cdesc','$newFileName')";
         if (mysqli_query($con, $q)) {
             echo "<script>alert('New record created successfully')</script>";
-            header("Location: course.php");
+            header("Location: fivepoints.php?cname=" . $cname);
             exit();
         } else {
             echo "Error: " . $q . "<br>" . mysqli_error($con);
@@ -88,7 +88,7 @@ if (isset($_POST['add'])) {
                         <textarea class="form-control" id="cdesc" name="cdesc" rows="3"></textarea>
                         <p id="cdesc_err"></p>
                     </div>
-                    <button type="submit" name="add" class="btn btn-primary ">Add Course</button>
+                    <button type="submit" name="next1" class="btn btn-primary ">Next →</button>
                 </form>
             </div>
         </div>

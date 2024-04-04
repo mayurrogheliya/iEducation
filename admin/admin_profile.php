@@ -4,27 +4,30 @@ if (!isset($_SESSION['email'])) {
     header("location: login.php");
     exit();
 }
-?>
 
-<?php
-include_once("./backend/database.php");
+include_once("../backend/database.php");
+
 // Fetch user data from the database
-$uemail = $_SESSION['email'];
-$query = "SELECT * FROM register WHERE u_email = '$uemail'";
+$aemail = $_SESSION['email'];
+$query = "SELECT * FROM admin WHERE a_email = '$aemail'";
 $result = mysqli_query($con, $query);
 
 // Check if the query was successful
-if ($result) {
-    $userData = mysqli_fetch_assoc($result);
-    $name = $userData['u_name'];
-    $email = $userData['u_email'];
-    $password = $userData['u_password'];
-    $contact = $userData['u_phone'];
-    $image = $userData['u_photo'];
-} else {
-    // Handle error if the query fails
-    echo "Error: " . mysqli_error($connection);
+if (!$result || mysqli_num_rows($result) == 0) {
+    // Handle error if the query fails or no rows returned
+    echo "Error: Unable to fetch user data.";
+    echo $aemail;
+    exit();
 }
+
+// Fetch user data
+$userData = mysqli_fetch_assoc($result);
+$name = $userData['a_name'];
+$email = $userData['a_email'];
+$password = $userData['a_password'];
+$contact = $userData['a_phone'];
+$image = $userData['a_image'];
+
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve the updated values from the form
@@ -48,17 +51,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $updatedImage = uniqid('profile_image_') . '.' . $imageFileType;
 
             // Move the uploaded file to the desired location
-            move_uploaded_file($newImageTemp, "./uploads/" . $updatedImage);
+            move_uploaded_file($newImageTemp, "../uploads/" . $updatedImage);
         }
     }
 
     // Update the user data in the database
-    $updateQuery = "UPDATE register SET u_name='$updatedName', u_password='$updatedPassword', u_phone='$updatedContact', u_photo='$updatedImage' WHERE u_email='$uemail'";
+    $updateQuery = "UPDATE admin SET a_name='$updatedName', a_password='$updatedPassword', a_phone='$updatedContact', a_image='$updatedImage' WHERE a_email='$aemail'";
     $updateResult = mysqli_query($con, $updateQuery);
 
     if ($updateResult) {
         // Redirect to the profile page after successful update
-        header("Location: profile.php");
+        header("Location: admin_profile.php");
         exit();
     } else {
         // Handle error if the update fails
@@ -73,19 +76,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
-    <?php
-    include_once("header.php")
-    ?>
+
+    <nav class="navbar border-bottom shadow-sm shadow-sm navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <span class="h1">iEducation</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="btn btn-primary " aria-current="page" href="admin.php">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-5 col-md-6 mx-auto">
                 <div class="profile-section text-start p-4 bg-light rounded">
+
                     <form id="profileForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
                         <div class="text-center mb-3">
-                            <img src="./uploads/<?php echo $image; ?>" alt="User Image" class="profile-image mb-3 rounded-circle img-fluid  shadow" style="width: 150px; height:150px">
+                            <img src="../uploads/<?php echo $image; ?>" alt="User Image" class="profile-image mb-3 rounded-circle img-fluid  shadow" style="width: 150px; height:150px">
                             <input type="file" name="new_image" id="new_image" accept="image/*" style="display: none;">
                         </div>
                         <div class="mb-3 row">
@@ -122,6 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     <script>
         function show() {

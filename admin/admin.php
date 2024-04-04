@@ -12,7 +12,7 @@
 <body>
     <?php
     include_once("navbar.php")
-        ?>
+    ?>
 
     <div class="container-fluid mt-2">
         <div class="row">
@@ -20,7 +20,7 @@
             <div class="col-md-3">
                 <?php
                 include_once("header.php")
-                    ?>
+                ?>
             </div>
 
             <div class="col-md-9">

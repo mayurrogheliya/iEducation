@@ -5,7 +5,7 @@ function contactvalidate() {
     var fp = document.getElementById("phone");
     var fe = document.getElementById("email");
     var fm = document.getElementById("message");
-    
+
     var frn = document.getElementById("name_err");
     var frp = document.getElementById("phone_err");
     var fre = document.getElementById("email_err");
@@ -20,7 +20,7 @@ function contactvalidate() {
         fn.style.border = "1px solid #e3e6ea";
         v_fn = true;
     }
-    
+
     if (fp.value == "") {
         frp.innerHTML = "Please enter the phone number";
         frp.style.color = "red";
@@ -40,7 +40,7 @@ function contactvalidate() {
             v_fp = true;
         }
     }
-    
+
     if (fe.value == "") {
         fre.innerHTML = "Please enter the email";
         fre.style.color = "red";
@@ -59,9 +59,9 @@ function contactvalidate() {
             fe.style.border = "1px solid #e3e6ea";
             v_fe = true;
         }
-        
+
     }
-    
+
     if (fm.value == "") {
         frm.innerHTML = "Please enter the message";
         frm.style.color = "red";
@@ -72,7 +72,7 @@ function contactvalidate() {
         fm.style.border = "1px solid #e3e6ea";
         v_fm = true;
     }
-    
+
     if (v_fn == true && v_fp == true && v_fe == true && v_fm == true) {
         return true
     } else {
@@ -81,61 +81,43 @@ function contactvalidate() {
 }
 
 
-// ******************* contact form validation ****************
+// ******************* login form validation ****************
 
 
-function loginvalidate() {
-    let ue = document.getElementById("email");
-    let ue_err = document.getElementById("email_err");
-    let up = document.getElementById("password");
-    let up_err = document.getElementById("password_err");
+// function loginvalidate() {
+//     let ue = document.getElementById("email");
+//     let ue_err = document.getElementById("email_err");
+//     let up = document.getElementById("password");
+//     let up_err = document.getElementById("password_err");
 
-    if (ue.value == "") {
-        ue_err.innerHTML = "* Please enter the email";
-        ue_err.style.color = "red";
-        ue.style.border = "1px solid red";
-        var uec = false;
-    } else {
-        let limit_ue = /^[\w._-]+@[\w.]+\.[a-zA-Z]{2,4}$/;
-        let result = limit_ue.test(ue.value);
-        if (result == false) {
-            ue_err.innerHTML = "* Enter email is not proper";
-            ue_err.style.color = "red";
-            ue.style.border = "1px solid red";
-            uec = false;
-        } else {
-            ue_err.innerHTML = "";
-            ue.style.border = "1px solid #e3e6ea";
-            uec = true;
-        }
-    }
+//     if (ue.value == "") {
+//         ue_err.innerHTML = "* Please enter the email";
+//         ue_err.style.color = "red";
+//         ue.style.border = "1px solid red";
+//         var uec = false;
+//     } else {
+//         ue_err.innerHTML = "";
+//         ue.style.border = "1px solid #e3e6ea";
+//         uec = true;
+//     }
 
-    if (up.value == "") {
-        up_err.innerHTML = "* Please enter the password";
-        up_err.style.color = "red";
-        up.style.border = "1px solid red";
-        var upc = false;
-    } else {
-        let limit_up = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        let result = limit_up.test(up.value);
-        if (result == false) {
-            up_err.innerHTML = "* Please enter the valid password";
-            up_err.style.color = "red";
-            up.style.border = "1px solid red";
-            upc = false;
-        } else {
-            up.style.border = "1px solid #e3e6ea";
-            up_err.innerHTML = ""
-            upc = true;
-        }
-    }
+//     if (up.value == "") {
+//         up_err.innerHTML = "* Please enter the password";
+//         up_err.style.color = "red";
+//         up.style.border = "1px solid red";
+//         var upc = false;
+//     } else {
+//         up.style.border = "1px solid #e3e6ea";
+//         up_err.innerHTML = ""
+//         upc = true;
+//     }
 
-    if (uec == true && upc == true) {
-        return true;
-    } else {
-        return false;
-    }
-}
+//     if (uec == true && upc == true) {
+//         return true;
+//     } else {
+//         return false;
+//     }
+// }
 
 // ******************* register form validation ****************
 

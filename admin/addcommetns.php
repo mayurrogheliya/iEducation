@@ -10,12 +10,6 @@ if (isset($_POST['add'])) {
     $uemail = $_POST['uemail'];
     $comment = $_POST['comment'];
 
-    $file = $_FILES['uimage'];
-    $fileName = $file['name'];
-    $fileTmpName = $file['tmp_name'];
-    $fileSize = $file['size'];
-    $fileError = $file['error'];
-
     // Insert data into the database
     $q = "INSERT INTO messages(u_name, u_phone, u_email,message) VALUES ('$uname', '$uphone', '$uemail', '$comment')";
     if (mysqli_query($con, $q)) {

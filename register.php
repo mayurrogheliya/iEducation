@@ -1,44 +1,85 @@
 <?php
+session_start();
+if (isset($_SESSION['email'])) {
+    header("location: home.php");
+}
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require('PHPMailer/PHPMailer.php');
+require('PHPMailer/SMTP.php');
+require('PHPMailer/Exception.php');
+
 include_once("./backend/database.php");
 
 if (isset($_POST['btn'])) {
     $name = $_POST["name"];
     $phone = $_POST["phone"];
     $email = $_POST["email"];
-    $pasword = $_POST["password"];
+    $password = $_POST["password"];
+    $token = uniqid() . uniqid();
 
-    // Check if the directory exists, if not, create it
     $uploadDirectory = "./uploads/";
     if (!is_dir($uploadDirectory)) {
-        mkdir($uploadDirectory, 0777, true); // create directory with full permissions
+        mkdir($uploadDirectory, 0777, true);
     }
 
-    // Handle file upload
     $file = $_FILES['photo'];
     $fileName = $file['name'];
     $fileTmpName = $file['tmp_name'];
     $fileSize = $file['size'];
     $fileError = $file['error'];
 
-    // Get file extension
     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-
-    // Generate a unique file name to prevent overwriting files with the same name
     $newFileName = uniqid('', true) . '.' . $fileExt;
-
-    // Specify the destination directory for the uploaded file
     $destination = $uploadDirectory . $newFileName;
 
-    // Move the uploaded file to the destination directory
     if (move_uploaded_file($fileTmpName, $destination)) {
-        // Insert data into the database
-        $q = "INSERT INTO register(u_name, u_phone, u_email, u_password, u_photo) VALUES ('$name', '$phone', '$email', '$pasword', '$newFileName')";
-        if (mysqli_query($con, $q)) {
-            echo "<script>alert('New record created successfully')</script>";
-            header("Location: login.php");
-            exit();
+        $check_query = "SELECT * FROM register WHERE u_email='$email'";
+        $result = mysqli_query($con, $check_query);
+        if (mysqli_num_rows($result) > 0) {
+            echo "<script>alert('Email already exists. Please use a different email.')</script>";
         } else {
-            echo "Error: " . $q . "<br>" . mysqli_error($con);
+            $q = "INSERT INTO register(u_name, u_phone, u_email, u_password, u_photo, token) VALUES ('$name', '$phone', '$email', '$password', '$newFileName','$token')";
+            if (mysqli_query($con, $q)) {
+
+                $mail = new PHPMailer();
+                try {
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'mrogheliya585@rku.ac.in';
+                    $mail->Password = 'dwtg zqoz ccoo ynqh';
+                    $mail->SMTPSecure = 'ssl';
+                    $mail->Port = 465;
+
+                    $mail->setFrom('mrogheliya585@rku.ac.in', 'Mayur Rogheliya');
+                    $mail->addAddress($email, $name);
+
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Account Verification';
+                    $mail->Body = 'Congratulations! ' . $name . ' Your account has been created successfully. This email is for your account verification. <br> Kindly click on the link below to verify your account. You will be able to login into your account only after account verification. <br>
+            <a href="http://localhost/web%20programming/iEducation/verify_account.php?email=' . $email . '&token=' . $token . '">Click here to verify your account</a>';
+
+                    if ($mail->send()) {
+                        setcookie("success", "Registration Successfull. Activation mail is sent to your registered email account. Kindly activate your account to login.", time() + 2, "/");
+                        header("Location: login.php");
+                        exit();
+                    } else {
+                        setcookie("error", "Error in sending mail. Please try again later.", time() + 2, "/");
+                        header("Location: register.php");
+                        exit();
+                    }
+                } catch (Exception $e) {
+                    echo "Email sending failed. Error: {$mail->ErrorInfo}";
+                }
+
+                echo "<script>alert('New record created successfully')</script>";
+            } else {
+                echo "Error: " . $q . "<br>" . mysqli_error($con);
+            }
         }
     } else {
         echo "Error uploading file";
@@ -56,21 +97,18 @@ if (isset($_POST['btn'])) {
     <script src="https://kit.fontawesome.com/2aec9589fd.js" crossorigin="anonymous"></script>
 </head>
 
-
 <body>
-    <?php
-    include_once("header.php");
-    ?>
-    <section class="m-5 ">
+    <?php include_once("header.php"); ?>
+    <section class="m-5">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="card border border-light-subtle rounded-3 shadow-sm col-lg-7 col-xl-6 col-md-9">
                     <div class="card-body p-md-3">
                         <div class="row justify-content-center">
                             <div class="col-12 order-2 order-lg-1">
-
                                 <p class="text-center h1 fw-bold mb-4 mx-1 mx-md-4 mt-3">Sign up</p>
                                 <form onsubmit="return registervalidate()" action="register.php" class="mx-1 mx-md-4" method="post" enctype="multipart/form-data">
+
                                     <!-- name -->
                                     <div class="d-flex flex-row  align-items-center">
                                         <div>
@@ -151,8 +189,8 @@ if (isset($_POST['btn'])) {
                                             Register</a>
                                     </p>
 
-                                </form>
 
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -162,7 +200,6 @@ if (isset($_POST['btn'])) {
     </section>
 
     <script src="./javascript/validation.js"></script>
-
 </body>
 
 </html>
