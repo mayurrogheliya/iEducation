@@ -42,7 +42,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title"><?php echo $row['c_name']; ?></h5>
                                     <p class="card-text"><?php echo $row['c_desc']; ?></p>
-                                    <a href="chtml.php" class="btn btn-primary">Learn More</a>
+                                    <a href="chtml.php?cname=<?php echo urlencode($row['c_name']); ?>" class="btn btn-primary">Learn More</a>
                                 </div>
                             </div>
                         </div>
