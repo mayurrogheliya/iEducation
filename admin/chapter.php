@@ -8,6 +8,15 @@ if (isset($_GET['chapter'])) {
     $chapter = "Default Chapter";
 }
 
+// Retrieve the cname value from URL parameter
+if (isset($_GET['cname'])) {
+    $cname = $_GET['cname'];
+} else {
+    // Handle case when cname parameter is not provided
+    // You can set a default value or display an error message
+    $cname = "Default cname";
+}
+
 // Include the database connection file
 include_once("../backend/database.php");
 
@@ -54,8 +63,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         $chapterName = $chapter['name'];
         $chapterDescription = $chapter['description'];
         $pdfName = isset($uploadedPDFs[$key]) ? $uploadedPDFs[$key] : '';
+        date_default_timezone_set("Asia/Kolkata");
+        $s_time = date("Y-m-d G:i:s");
         // Insert data into the database
-        $query = "INSERT INTO chapters (chapter_name, chapter_description, chapter_pdf) VALUES ('$chapterName', '$chapterDescription', '$pdfName')";
+        $query = "INSERT INTO chapters (chapter_name, chapter_description, chapter_pdf, c_name, p_time) VALUES ('$chapterName', '$chapterDescription', '$pdfName', '$cname','$s_time')";
         // Execute the query
         if (mysqli_query($con, $query)) {
             echo "Record inserted successfully";
@@ -98,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
             <div class="col-md-9">
                 <!-- Display the chapter value -->
-                <form id="chapterForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
+                <form id="chapterForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>?cname=<?php echo urlencode($cname); ?>" enctype="multipart/form-data">
                     <?php for ($i = 1; $i <= $chapter; $i++) : ?>
                         <div class="mb-3 mt-4">
                             <label for="point<?php echo $i; ?>" class="form-label">Enter chapter <?php echo $i; ?> name</label>
@@ -108,12 +119,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             <label for="description<?php echo $i; ?>" class="form-label">Enter chapter <?php echo $i; ?> description</label>
                             <textarea class="form-control chapter-description" id="description<?php echo $i; ?>" name="description[]" rows="4" placeholder="Chapter <?php echo $i; ?> description"></textarea>
                         </div>
+                        <div class="mb-3">
+                            <label for="cpdf" class="form-label">Select chapter pdf</label><br>
+                            <input type="file" id="cpdf" name="cpdf[]" accept=".pdf" class="form-control chapter-pdf">
+                            <p id="cpdf_err" style="color: red;"></p>
+                        </div>
                     <?php endfor; ?>
-                    <div class="mb-3">
-                        <label for="cpdf" class="form-label">Select chapter pdf</label><br>
-                        <input type="file" id="cpdf" name="cpdf[]" accept=".pdf, .doc, .docx" class="form-control-file chapter-pdf">
-                        <p id="cpdf_err" style="color: red;"></p>
-                    </div>
                     <button type="submit" name="submit" class="btn btn-primary mb-4 mt-2">Submit</button>
                 </form>
 
@@ -126,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             var valid = true;
             var chapterNames = document.querySelectorAll('.chapter-name');
             var chapterDescriptions = document.querySelectorAll('.chapter-description');
-            var chapterPdf = document.querySelector('.chapter-pdf');
+            var chapterPdfs = document.querySelectorAll('.chapter-pdf');
 
             // Check if chapter names are not empty
             chapterNames.forEach(function(chapterName) {
@@ -148,15 +159,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 }
             });
 
-            // Check if a chapter PDF is selected
-            if (chapterPdf.files.length === 0) {
-                valid = false;
-                document.getElementById('cpdf_err').textContent = 'Please select a PDF file.';
-            } else {
-                document.getElementById('cpdf_err').textContent = '';
-            }
-
-            return valid;
+            // Check if a chapter PDF is selected for each chapter
+            chapterPdfs.forEach(function(chapterPdf) {
+                if (chapterPdf.files.length === 0) {
+                    valid = false;
+                    chapterPdf.classList.add('is-invalid');
+                } else {
+                    chapterPdf.classList.remove('is-invalid');
+                }
+            });
+            return valid; // Return the validation result
         }
 
         // Form submission
@@ -166,6 +178,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             }
         });
     </script>
+
 </body>
 
 </html>

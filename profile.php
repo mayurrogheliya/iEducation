@@ -1,12 +1,9 @@
 <?php
 session_start();
 if (!isset($_SESSION['email'])) {
-    header("location: login.php");
-    exit();
+    include_once("header.php");
 }
-?>
 
-<?php
 include_once("./backend/database.php");
 // Fetch user data from the database
 $uemail = $_SESSION['email'];
@@ -103,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="mb-3 row">
                             <label for="password" class="col-sm-3 col-form-label">Password:</label>
                             <div class="col-sm-9">
-                                <input type="password" id="password" name="password" class="form-control" value="<?php echo $password; ?>" required readonly>
+                                <input type="password" id="password" name="password" class="form-control" value="<?php echo $password; ?>" required disabled>
                                 <input type="checkbox" class="mt-2" onclick="show()"> Show Password
                             </div>
                         </div>

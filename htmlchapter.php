@@ -1,3 +1,33 @@
+<?php
+// Include the database connection file
+session_start();
+if (!isset($_SESSION['email'])) {
+    include_once("header.php");
+}
+
+include_once("header.php");
+include_once("./backend/database.php");
+$cname = $_GET['cname'] ?? '';
+
+// Fetch chapters data from the database
+$query = "SELECT * FROM chapters WHERE c_name = '$cname'";
+$result = mysqli_query($con, $query);
+
+// Check if there are any chapters
+if (mysqli_num_rows($result) > 0) {
+    // Initialize an array to store chapter data
+    $chapters = array();
+
+    // Fetch and store chapter data in the array
+    while ($row = mysqli_fetch_assoc($result)) {
+        $chapters[] = $row;
+    }
+} else {
+    echo "No chapters found.";
+    exit(); // Stop further execution if no chapters found
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,33 +35,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iEducation - HTML</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
-
     <div class="container mt-4">
-        <div class="card">
-            <div class="card-header">
-                Chapter Title
+        <?php foreach ($chapters as $chapter) : ?>
+            <div class="card">
+                <div class="card-header">
+                    <?php echo htmlspecialchars($chapter['chapter_name']); ?>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><?php echo htmlspecialchars($chapter['chapter_name']); ?></h5>
+                    <p class="card-text"><?php echo htmlspecialchars($chapter['chapter_description']); ?></p>
+                    <?php if (!empty($chapter['chapter_pdf'])) : ?>
+                        <!-- Directly link to the file's URL without specifying the download attribute -->
+                        <a href="uploads/<?php echo htmlspecialchars($chapter['chapter_pdf']); ?>" target="_blank" class="btn btn-primary">Read Chapter</a>
+                    <?php else : ?>
+                        <p>No PDF available</p>
+                    <?php endif; ?>
+                    <!-- Add more actions/buttons if needed -->
+                </div>
+                <div class="card-footer text-muted">
+                    Posted on <?php echo htmlspecialchars($chapter['p_time']); ?>
+                </div>
             </div>
-            <div class="card-body">
-                <h5 class="card-title">Chapter 1: HTML basics</h5>
-                <p class="card-text">This is the first chapter of our book. It covers the basics and sets the stage for
-                    what's to come.</p>
-                <a href="pdf/ch1.pdf" target="_parent" class="btn btn-primary">Read Chapter</a>
-                <a href="pdf/ch1.pdf" target="_parent" class="btn btn-primary">Exam</a>
-            </div>
-            <div class="card-footer text-muted">
-                Posted on February 23, 2024
-            </div>
-        </div>
+            <br>
+        <?php endforeach; ?>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
 </body>
 
 </html>

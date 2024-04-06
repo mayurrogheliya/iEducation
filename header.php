@@ -12,12 +12,31 @@
 
 <body>
 
+    <?php
+    include_once("./backend/database.php");
+
+    $q = "SELECT * FROM home";
+    $result = mysqli_query($con, $q);
+    ?>
+
     <div class="navsection ">
         <nav class="navbar navbar-expand-lg border-bottom shadow-sm shadow-sm">
             <div class="container">
-                <a class="nav-link" href="home.php">
-                    <h1 class="text-dark">iEduction</h1>
-                </a>
+                <?php
+                // Check if there are any results
+
+                if (mysqli_num_rows($result) > 0) {
+                    // Loop through each row of the result
+                    while ($row = mysqli_fetch_assoc($result)) {
+                ?>
+                        <a class="nav-link" href="home.php">
+                            <h1 class="text-dark"><?php echo $row['websiteName']; ?></h1>
+                        </a>
+                <?php
+                    }
+                } else {
+                    echo "<tr><td colspan='7'>Unknown</td></tr>";
+                } ?>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -25,6 +44,8 @@
 
                 <div class="collapse navbar-collapse justify-content-start" id="navbarNav">
                     <ul class="navbar-nav ms-4">
+
+                        <!-- Conditionally show login/register or logout -->
                         <li class="nav-item fs-4">
                             <a class="nav-link home" href="home.php">Home</a>
                         </li>
@@ -37,8 +58,6 @@
                         <li class="nav-item fs-4">
                             <a class="nav-link contact" href="contact.php">Contact</a>
                         </li>
-
-                        <!-- Conditionally show login/register or logout -->
                         <?php if (!isset($_SESSION['email'])) : ?>
                             <li class="nav-item fs-4">
                                 <a class="nav-link login" href="login.php">Login</a>
@@ -66,6 +85,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-lg-end dropdown-menu-sm-start " aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="profile.php" style="display: <?php echo isset($_SESSION['email']) ? 'block' : 'none'; ?>">Your Profile</a></li>
+                            <li><a class="dropdown-item" href="changePassword.php" style="display: <?php echo isset($_SESSION['email']) ? 'block' : 'none'; ?>">Change Password</a></li>
                             <li><a class="dropdown-item" href="logout.php" style="display: <?php echo isset($_SESSION['email']) ? 'block' : 'none'; ?>">Sign out</a></li>
                             <li><a class="dropdown-item" href="login.php" style="display: <?php echo isset($_SESSION['email']) ? 'none' : 'block'; ?>">Login</a></li>
                             <li><a class="dropdown-item" href="register.php" style="display: <?php echo isset($_SESSION['email']) ? 'none' : 'block'; ?>">Register</a></li>

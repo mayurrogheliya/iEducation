@@ -62,7 +62,7 @@ if (isset($_SESSION['email'])) {
                                         <p id="password_err"></p>
                                     </div>
                                     <div class="col-12">
-                                        <a href="" class="link-primary text-decoration-underline">Forgot password</a>
+                                        <a href="forgotPassword.php" class="link-primary text-decoration-underline">Forgot password</a>
                                     </div>
                                     <div class="col-12">
                                         <div class="d-grid my-3">

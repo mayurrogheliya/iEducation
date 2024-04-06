@@ -144,43 +144,7 @@ if (isset($_GET['id'])) {
             }
 
 
-
-            function chpdetail() {
-                if (cchpnum.value == "") {
-                    cchpnum_err.style.color = 'red';
-                    cchpnum_err.innerHTML = 'Please enter how many chapter you upload in this course';
-                    cchpnum.style.border = '1px solid red';
-                    var cchpnumr = false;
-                } else {
-                    cchpnum_err.innerHTML = "";
-                    cchpnum.style.border = "1px solid #e3e6ea";
-                    cchpnumr = true;
-                }
-
-                if (cchpname.value == "") {
-                    cchpname_err.style.color = 'red';
-                    cchpname_err.innerHTML = 'Please enter chapter name';
-                    cchpname.style.border = '1px solid red';
-                    var cchpnamer = false;
-                } else {
-                    cchpname_err.innerHTML = "";
-                    cchpname.style.border = "1px solid #e3e6ea";
-                    cchpnamer = true;
-                }
-
-                if (cchpdf.files.length == 0) {
-                    cchpdf_err.style.color = 'red';
-                    cchpdf_err.innerHTML = 'Please enter chapter name';
-                    cchpdf.style.border = '1px solid red';
-                    var cchpdfr = false;
-                } else {
-                    cchpdf_err.innerHTML = "";
-                    cchpdf.style.border = "1px solid #e3e6ea";
-                    cchpdfr = true;
-                }
-            }
-
-            if (cnamer == true && cimager == true && cdescr == true && cchpnumr == true && cchpnamer == true && cchpdfr == true) {
+            if (cnamer == true && cimager == true && cdescr == true) {
                 return true;
             } else {
                 return false;

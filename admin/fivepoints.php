@@ -23,7 +23,7 @@ if (isset($_POST['next2'])) {
 
     $q = "INSERT INTO topic(point1, point2, point3,point4,point5,chapter,cname) VALUES ('$point1','$point2','$point3','$point4','$point5','$chapter','$cname')";
     if (mysqli_query($con, $q)) {
-        header("Location: chapter.php?chapter=" . $chapter);
+        header("Location: chapter.php?chapter=" . $chapter . "&cname=" . urlencode($cname));
         exit();
     } else {
         echo "Error: " . $q . "<br>" . mysqli_error($con);

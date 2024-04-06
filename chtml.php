@@ -5,7 +5,6 @@ if (!isset($_SESSION['email'])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,10 +21,10 @@ if (!isset($_SESSION['email'])) {
     $cname = $_GET['cname'] ?? '';
 
     $q1 = "SELECT * FROM course where c_name = '$cname'";
-    $q2 = "SELECT * FROM topic where cname = '$cname'";
     $result1 = mysqli_query($con, $q1);
-    $result2 = mysqli_query($con, $q2);
     $t1row = mysqli_fetch_assoc($result1);
+    $q2 = "SELECT * FROM topic where cname = '$cname'";
+    $result2 = mysqli_query($con, $q2);
     $t2row = mysqli_fetch_assoc($result2);
     ?>
     <section class="py-5 py-xl-8" id="course">
@@ -41,7 +40,7 @@ if (!isset($_SESSION['email'])) {
                 </ul>
             </div>
             <main class="mt-4">
-                <a type="button" href="htmlchapter.php" class="btn btn-primary my-1 ">Go to Course
+                <a type="button" href="htmlchapter.php?cname=<?php echo $t1row['c_name']; ?>" class="btn btn-primary my-1 ">Go to Course
                     free</a>
                 <a type="button" href="payment.php" class="btn btn-primary my-1 ">Get Certificate</a>
             </main>

@@ -1,4 +1,10 @@
 <?php
+
+session_start();
+if (!isset($_SESSION['email'])) {
+    include_once("header.php");
+}
+
 // Include the database connection file
 include_once("./backend/database.php");
 $successMessage = '';
