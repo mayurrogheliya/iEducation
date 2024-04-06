@@ -134,6 +134,7 @@ if (isset($_POST['btn'])) {
             } else {
                 return false;
             }
+        }
     </script>
 </body>
 
