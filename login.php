@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['email'])) {
+if (isset($_SESSION['uemail'])) {
     header("location: home.php");
     exit();
 }
@@ -20,7 +20,7 @@ if (isset($_SESSION['email'])) {
     $login_err = "";
     $active_err = "";
     if (isset($_POST['submit'])) {
-        $email = $_POST['email'];
+        $email = $_POST['uemail'];
         $password = $_POST['password'];
         $query = "SELECT * FROM register WHERE u_email = '$email' AND u_password = '$password'";
         $result = mysqli_query($con, $query);
@@ -29,7 +29,7 @@ if (isset($_SESSION['email'])) {
             while ($a = mysqli_fetch_array($result)) {
                 $status = $a[7];
                 if ($status == "Active") {
-                    $_SESSION['email'] = $email;
+                    $_SESSION['uemail'] = $email;
                     header("Location: home.php");
                 } else {
                     $active_err = "Account is not activated. Kindly activate your account by clicking on the activation link sent to your email address";
@@ -62,7 +62,7 @@ if (isset($_SESSION['email'])) {
                                 <div class="row gy-2 overflow-hidden">
                                     <div class="col-12">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" name="email" id="email" placeholder="name@example.com" />
+                                            <input type="text" class="form-control" name="uemail" id="email" placeholder="name@example.com" />
                                             <label for="email" class="form-label">Email</label>
                                         </div>
                                         <p id="email_err"></p>

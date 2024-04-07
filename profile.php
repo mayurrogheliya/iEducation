@@ -1,12 +1,12 @@
 <?php
 session_start();
-if (!isset($_SESSION['email'])) {
+if (!isset($_SESSION['uemail'])) {
     include_once("header.php");
 }
 
 include_once("./backend/database.php");
 // Fetch user data from the database
-$uemail = $_SESSION['email'];
+$uemail = $_SESSION['uemail'];
 $query = "SELECT * FROM register WHERE u_email = '$uemail'";
 $result = mysqli_query($con, $query);
 
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Update the user data in the database
-    $updateQuery = "UPDATE register SET u_name='$updatedName', u_password='$updatedPassword', u_phone='$updatedContact', u_photo='$updatedImage' WHERE u_email='$uemail'";
+    $updateQuery = "UPDATE register SET u_name='$updatedName', u_phone='$updatedContact', u_photo='$updatedImage' WHERE u_email='$uemail'";
     $updateResult = mysqli_query($con, $updateQuery);
 
     if ($updateResult) {

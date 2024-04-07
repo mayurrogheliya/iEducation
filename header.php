@@ -13,8 +13,8 @@
 <body>
 
     <?php
-    include_once("./backend/database.php");
 
+    include_once("./backend/database.php");
     $q = "SELECT * FROM home";
     $result = mysqli_query($con, $q);
     ?>
@@ -58,7 +58,7 @@
                         <li class="nav-item fs-4">
                             <a class="nav-link contact" href="contact.php">Contact</a>
                         </li>
-                        <?php if (!isset($_SESSION['email'])) : ?>
+                        <?php if (!isset($_SESSION['uemail'])) : ?>
                             <li class="nav-item fs-4">
                                 <a class="nav-link login" href="login.php">Login</a>
                             </li>
@@ -84,11 +84,11 @@
                             <img src="img/profile-user.png" alt="profile" class="rounded-circle w-50 h-50 ">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-lg-end dropdown-menu-sm-start " aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="profile.php" style="display: <?php echo isset($_SESSION['email']) ? 'block' : 'none'; ?>">Your Profile</a></li>
-                            <li><a class="dropdown-item" href="changePassword.php" style="display: <?php echo isset($_SESSION['email']) ? 'block' : 'none'; ?>">Change Password</a></li>
-                            <li><a class="dropdown-item" href="logout.php" style="display: <?php echo isset($_SESSION['email']) ? 'block' : 'none'; ?>">Sign out</a></li>
-                            <li><a class="dropdown-item" href="login.php" style="display: <?php echo isset($_SESSION['email']) ? 'none' : 'block'; ?>">Login</a></li>
-                            <li><a class="dropdown-item" href="register.php" style="display: <?php echo isset($_SESSION['email']) ? 'none' : 'block'; ?>">Register</a></li>
+                            <li><a class="dropdown-item" href="profile.php" style="display: <?php echo isset($_SESSION['uemail']) ? 'block' : 'none'; ?>">Your Profile</a></li>
+                            <li><a class="dropdown-item" href="changePassword.php" style="display: <?php echo isset($_SESSION['uemail']) ? 'block' : 'none'; ?>">Change Password</a></li>
+                            <li><a class="dropdown-item" href="logout.php" style="display: <?php echo isset($_SESSION['uemail']) ? 'block' : 'none'; ?>">Sign out</a></li>
+                            <li><a class="dropdown-item" href="login.php" style="display: <?php echo isset($_SESSION['uemail']) ? 'none' : 'block'; ?>">Login</a></li>
+                            <li><a class="dropdown-item" href="register.php" style="display: <?php echo isset($_SESSION['uemail']) ? 'none' : 'block'; ?>">Register</a></li>
                         </ul>
                     </div>
                 </div>

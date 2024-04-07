@@ -1,11 +1,11 @@
 <?php
 session_start();
-include_once("./backend/database.php");
-
-if (!isset($_SESSION['uemail'])) {
+if (!isset($_SESSION['email'])) {
     header("location: login.php");
     exit();
 }
+
+include_once("../backend/database.php");
 
 $error = '';
 $errors = '';
@@ -16,18 +16,18 @@ if (isset($_POST['change_password_btn'])) {
     $new_password = $_POST['new_password'];
 
     // Fetch user data from the database
-    $check_query = "SELECT * FROM register WHERE u_email='$email'";
+    $check_query = "SELECT * FROM admin WHERE a_email='$email'";
     $result = mysqli_query($con, $check_query);
 
     // Check if the query was successful
     if ($result) {
         $row = mysqli_fetch_assoc($result);
-        $stored_password = $row['u_password'];
+        $stored_password = $row['a_password'];
 
         // Verify the current password
         if ($current_password == $stored_password) {
             // Update the password in the database
-            $update_query = "UPDATE register SET u_password='$new_password' WHERE u_email='$email'";
+            $update_query = "UPDATE admin SET a_password='$new_password' WHERE a_email='$email'";
             if (mysqli_query($con, $update_query)) {
                 $errors = 'Password changed successfully.';
             } else {
@@ -48,12 +48,28 @@ if (isset($_POST['change_password_btn'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://kit.fontawesome.com/2aec9589fd.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
-    <?php include_once("header.php"); ?>
+
+    <nav class="navbar border-bottom shadow-sm shadow-sm navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <span class="h1">iEducation</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="btn btn-primary " aria-current="page" href="admin.php">Home</a>
+                        <a class="btn btn-primary " aria-current="page" href="changePassword.php">Change Password</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <section class="py-5 py-md-5">
         <div class="container">
             <div class="row justify-content-center">

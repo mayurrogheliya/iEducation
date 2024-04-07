@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Update the user data in the database
-    $updateQuery = "UPDATE admin SET a_name='$updatedName', a_password='$updatedPassword', a_phone='$updatedContact', a_image='$updatedImage' WHERE a_email='$aemail'";
+    $updateQuery = "UPDATE admin SET a_name='$updatedName', a_phone='$updatedContact', a_image='$updatedImage' WHERE a_email='$aemail'";
     $updateResult = mysqli_query($con, $updateQuery);
 
     if ($updateResult) {
@@ -91,6 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="btn btn-primary " aria-current="page" href="admin.php">Home</a>
+                        <a class="btn btn-primary " aria-current="page" href="changePassword.php">Change Password</a>
                     </li>
                 </ul>
             </div>
@@ -122,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="mb-3 row">
                             <label for="password" class="col-sm-3 col-form-label">Password:</label>
                             <div class="col-sm-9">
-                                <input type="password" id="password" name="password" class="form-control" value="<?php echo $password; ?>" required readonly>
+                                <input type="password" id="password" name="password" class="form-control" value="<?php echo $password; ?>" disabled>
                                 <input type="checkbox" class="mt-2" onclick="show()"> Show Password
                             </div>
                         </div>

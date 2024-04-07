@@ -1,7 +1,7 @@
 <?php
 // Include the database connection file
 session_start();
-if (!isset($_SESSION['email'])) {
+if (!isset($_SESSION['uemail'])) {
     include_once("header.php");
 }
 

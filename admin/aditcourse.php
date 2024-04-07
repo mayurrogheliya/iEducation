@@ -96,7 +96,7 @@ if (isset($_GET['id'])) {
                         <textarea class="form-control" id="cdesc" name="cdesc" rows="3"><?php echo $row['c_desc']; ?></textarea>
                         <p id="cdesc_err"></p>
                     </div>
-                    <button type="submit" name="update" class="btn btn-primary ">Update Course</button>
+                    <button type="submit" name="update" class="btn btn-primary ">Update</button>
                 </form>
             </div>
         </div>
