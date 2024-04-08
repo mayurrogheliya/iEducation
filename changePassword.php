@@ -11,7 +11,7 @@ $error = '';
 $errors = '';
 
 if (isset($_POST['change_password_btn'])) {
-    $email = $_SESSION['email'];
+    $email = $_SESSION['uemail'];
     $current_password = $_POST['current_password'];
     $new_password = $_POST['new_password'];
 

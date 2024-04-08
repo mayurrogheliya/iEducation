@@ -62,8 +62,7 @@ if (isset($_POST['change_password_btn'])) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="btn btn-primary " aria-current="page" href="admin.php">Home</a>
-                        <a class="btn btn-primary " aria-current="page" href="changePassword.php">Change Password</a>
+                        <a class="btn btn-primary" aria-current="page" href="admin.php">Home</a>
                     </li>
                 </ul>
             </div>

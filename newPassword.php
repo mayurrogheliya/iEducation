@@ -76,6 +76,7 @@ if (isset($_POST['btn'])) {
                                             <input type="password" class="form-control" id="repwd" name="repswd" placeholder="Repeat Password">
                                             <label for="repwd" class="form-label">Repeat Password</label>
                                             <span id="repswd_err"></span>
+                                            <span id="err"></span>
                                         </div>
                                     </div>
                                     <p><?php echo $error ?></p>
@@ -121,8 +122,9 @@ if (isset($_POST['btn'])) {
             }
 
             // Check if repeat password matches new password
-            if (newPassword != repeatPassword) {
+            if (newPassword.value != repeatPassword.value) {
                 err_rp.innerHTML = "Repeat password does not match the new password";
+                err_rp.style.color = "red";
                 var fp = false;
             } else {
                 err_rp.innerHTML = "";

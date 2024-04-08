@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['uemail'])) {
-    include_once("header.php");
+    header("location: login.php");
 }
 
 include_once("./backend/database.php");
@@ -112,6 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <div class="mb-3 row">
                             <button type="button" id="editProfileBtn" class="btn btn-primary col-3">Edit Profile</button>
+                            <a type="button" id="deleteProfileBtn" href="deleteAccount.php" class="btn btn-danger col-4 mx-2">Delete Account</a>
                             <button type="submit" id="saveChangesBtn" class="btn btn-primary col-3 mx-2" style="display:none;">Save Changes</button>
                         </div>
                     </form>
@@ -136,6 +137,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             });
             document.getElementById("saveChangesBtn").style.display = "inline-block";
             document.getElementById("new_image").style.display = "block";
+            document.getElementById("editProfileBtn").style.display = "none";
+            document.getElementById("deleteProfileBtn").style.display = "none";
         });
         document.getElementById("changeImageButton").addEventListener("click", function() {
             document.getElementById("new_image").click();
