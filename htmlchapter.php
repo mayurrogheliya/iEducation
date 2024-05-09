@@ -2,14 +2,21 @@
 // Include the database connection file
 session_start();
 if (!isset($_SESSION['uemail'])) {
-    include_once("header.php");
+    header("location: login.php");
+    exit(); // Stop further execution if user is not logged in
 }
 
 include_once("header.php");
 include_once("./backend/database.php");
 $cname = $_GET['cname'] ?? '';
 
-// Fetch chapters data from the database
+// Check if the user has made the payment
+$email = $_SESSION['uemail'];
+$query1 = "SELECT payment FROM register WHERE u_email = '$email'";
+$result2 = mysqli_query($con, $query1);
+$row2 = mysqli_fetch_assoc($result2);
+$paymentStatus = $row2['payment'];
+
 $query = "SELECT * FROM chapters WHERE c_name = '$cname'";
 $result = mysqli_query($con, $query);
 
@@ -39,6 +46,15 @@ if (mysqli_num_rows($result) > 0) {
 
 <body>
     <div class="container mt-4">
+        <div class="d-flex justify-content-end">
+            <?php
+            if ($paymentStatus === 'Yes') {
+                echo '<a href="quize.php?cname=' . $cname . '" class="btn btn-primary mb-4 ">Quiz</a>';
+            } else {
+                echo '<a href="payment.php?cname=' . $cname . '&uemail=' . $email . ' " class="btn btn-primary mb-4 ">Pay Now</a>';
+            }
+            ?>
+        </div>
         <?php foreach ($chapters as $chapter) : ?>
             <div class="card">
                 <div class="card-header">

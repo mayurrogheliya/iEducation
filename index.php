@@ -12,6 +12,7 @@ if (!isset($_SESSION['uemail'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/universe.css">
+    <link rel="shortcut icon" href="./img/favicon.jpg" type="image/x-icon">
 </head>
 
 <body>
@@ -50,6 +51,10 @@ if (!isset($_SESSION['uemail'])) {
             </div>
         </div>
     </section>
+
+    <?php
+    include_once("footer.php");
+    ?>
 
 
 </body>

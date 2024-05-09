@@ -1,73 +1,173 @@
+<?php
+// Include the database connection file
+session_start();
+if (!isset($_SESSION['uemail'])) {
+    header("location: login.php");
+}
+
+include_once("header.php");
+include_once("./backend/database.php");
+$cname = $_GET['cname'];
+$useremail = $_GET['uemail'];
+
+?>
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>How to Integrate Razorpay payment gateway in PHP | tutorialswebsite.com</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
-<body>
 
-<section class="credit-card mt-5 ">
-        <div class="container">
+<body style="background-repeat: no-repeat; background-color: #f8f9fa;">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title m-0">Pay and Take a Quiz</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="paymentForm">
+                            <div class="form-group ">
+                                <label for="billing_name">Name</label>
+                                <input type="text" class="form-control" id="billing_name" name="name" placeholder="Enter your name" required>
+                            </div>
 
-            <div class="card-holder">
-                <div class="card-box bg-news">
-                    <div class="row">
-                        <div class="col-lg-6 mx-auto">
-                            <h4>Pay $15/-</h4>
-                            <form>
-                                <div class="card-details">
-                                    <h3 class="title">Credit Card Details</h3>
-                                    <div class="row">
-                                        <div class="form-group mt-3 fs-5  col-12">
-                                            <label for="card-holder">Card Holder</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="far fa-user"></i></span>
-                                                <input id="card-holder" type="text" class="form-control"
-                                                    placeholder="Card Holder" aria-label="Card Holder"
-                                                    aria-describedby="basic-addon1">
-                                            </div>
-                                        </div>
-                                        <div class="form-group mt-3 fs-5  col-md-6">
-                                            <label for="">Expiration Date</label>
-                                            <div class="input-group expiration-date">
-                                                <input type="text" class="form-control" placeholder="MM" aria-label="MM"
-                                                    aria-describedby="basic-addon1">
-                                                <input type="text" class="form-control" placeholder="YY" aria-label="YY"
-                                                    aria-describedby="basic-addon1">
-                                            </div>
-                                        </div>
-                                        <div class="form-group mt-3 fs-5  col-md-6">
-                                            <label for="cvc">CVC</label>
-                                            <input id="cvc" type="text" class="form-control" placeholder="CVC"
-                                                aria-label="Card Holder" aria-describedby="basic-addon1">
-                                        </div>
-                                        <div class="form-group mt-3 fs-5  col-12">
-                                            <label for="card-number">Card Number</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i class="far fa-credit-card"></i></span>
-                                                <input id="card-number" type="text" class="form-control"
-                                                    placeholder="Card Number" aria-label="Card Holder"
-                                                    aria-describedby="basic-addon1">
-                                            </div>
-                                        </div>
-                                        <div class="form-group mt-3 fs-5  col-12">
-                                            <button type="button" class="btn btn-primary btn-block">Proceed</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                            <div class="form-group my-3 ">
+                                <label for="billing_mobile">Mobile Number</label>
+                                <input type="tel" class="form-control" id="billing_mobile" name="phone" placeholder="Enter your mobile number" required>
+                            </div>
+                            <div class="form-group my-3 ">
+                                <label for="payAmount">Payment Amount (INR)</label>
+                                <input type="number" class="form-control" id="payAmount" name="amount" value="500" min="500" max="500" placeholder="Enter amount" readonly required>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-block" name="btn" id="PayNow">Submit & Pay</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                        </div><!--/col-lg-6 -->
 
-                    </div><!--/row -->
-                </div><!--/card-box -->
-            </div><!--/card-holder -->
+    <script>
+        //Pay Amount
+        jQuery(document).ready(function($) {
 
-        </div><!--/container -->
-    </section>
+            jQuery('#PayNow').click(function(e) {
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+                var paymentOption = '';
+                let billing_name = $('#billing_name').val();
+                let billing_mobile = $('#billing_mobile').val();
+                var shipping_name = $('#billing_name').val();
+                var shipping_mobile = $('#billing_mobile').val();
+                let billing_email = '<?php echo $useremail; ?>';
+                var shipping_email = '<?php echo $useremail; ?>';
+
+                // Check if any of the input fields are empty
+                if (billing_name === '' || billing_mobile === '' || billing_email === '') {
+                    // Display error message
+                    alert('Please fill in all the fields');
+                    return;
+                }
+
+                var paymentOption = "netbanking";
+                var payAmount = $('#payAmount').val();
+
+                var request_url = "submitpayment.php";
+                var formData = {
+                    billing_name: billing_name,
+                    billing_mobile: billing_mobile,
+                    billing_email: billing_email,
+                    shipping_name: shipping_name,
+                    shipping_mobile: shipping_mobile,
+                    shipping_email: shipping_email,
+                    paymentOption: paymentOption,
+                    payAmount: payAmount,
+                    action: 'payOrder'
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: request_url,
+                    data: formData,
+                    dataType: 'json',
+                    encode: true,
+                }).done(function(data) {
+
+                    if (data.res == 'success') {
+                        var orderID = data.order_number;
+                        var orderNumber = data.order_number;
+                        var options = {
+                            "key": data.razorpay_key, // Enter the Key ID generated from the Dashboard
+                            "amount": data.userData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                            "currency": "INR",
+                            "name": "iEducation", //your business name
+                            "description": "Payment for quiz and get the certificate of the course",
+                            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfOI5aZGUj7AQR-oKwK5YxmlGMEJsGsEQXjSr8Pel7AQ&s",
+                            "order_id": data.userData.rpay_order_id, //This is a sample Order ID. Pass 
+                            "handler": function(response) {
+                                window.location.replace("payment-success.php?oid=" + orderID + "&rp_payment_id=" + response.razorpay_payment_id + "&rp_signature=" + response.razorpay_signature + "&uemail=<?php echo $useremail; ?>" + "&cname=<?php echo $cname; ?>");
+                            },
+                            "modal": {
+                                "ondismiss": function() {
+                                    window.location.replace("payment-success.php?oid=" + orderID);
+                                }
+                            },
+                            "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+                                "name": data.userData.name, //your customer's name
+                                "email": data.userData.email,
+                                "contact": data.userData.mobile //Provide the customer's phone number for better conversion rates 
+                            },
+                            "notes": {
+                                "address": "iEducation"
+                            },
+                            "config": {
+                                "display": {
+                                    "blocks": {
+                                        "banks": {
+                                            "name": 'Pay using ' + paymentOption,
+                                            "instruments": [
+
+                                                {
+                                                    "method": paymentOption
+                                                },
+                                            ],
+                                        },
+                                    },
+                                    "sequence": ['block.banks'],
+                                    "preferences": {
+                                        "show_default_blocks": true,
+                                    },
+                                },
+                            },
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+                        };
+                        var rzp1 = new Razorpay(options);
+                        rzp1.on('payment.failed', function(response) {
+
+                            window.location.replace("payment-failed.php?oid=" + orderID + "&reason=" + response.error.description + "&paymentid=" + response.error.metadata.payment_id);
+
+                        });
+
+                        rzp1.open();
+                        e.preventDefault();
+                    }
+
+                });
+            });
+        });
+    </script>
+
 
 </body>
+
 </html>

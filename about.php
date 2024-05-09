@@ -62,52 +62,6 @@ if (!isset($_SESSION['uemail'])) {
                 }
                 ?>
 
-
-
-
-                <!-- <div class="col-12 col-sm-6 col-xl-3">
-                    <div class="card border-0 border-bottom border-primary shadow-sm">
-                        <div class="card-body text-center p-4 p-xxl-5">
-                            <img src="img/online-learning.png" class="w-50" alt="image">
-                            <h4 class="mb-4">Expert Instructors</h4>
-                            <p class="mb-4 text-secondary fs-5">Our courses are led by experienced, knowledgeable
-                                instructors, experts in their respective fields, ensuring unparalleled
-                                educational experiences.</p>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-xl-3">
-                    <div class="card border-0 border-bottom border-primary shadow-sm">
-                        <div class="card-body text-center p-4 p-xxl-5">
-                            <img src="img/time.png" class="w-50" alt="image">
-                            <h4 class="mb-4">Flexible Learning</h4>
-                            <p class="mb-4 text-secondary fs-5">We offer flexible learning options, including online courses
-                                and part-time schedules tailored to accommodate your busy
-                                lifestyle demands effortlessly.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-xl-3">
-                    <div class="card border-0 border-bottom border-primary shadow-sm">
-                        <div class="card-body text-center p-4 p-xxl-5">
-                            <img src="img/opportunity.png" class="w-50" alt="image">
-                            <h4 class="mb-4">Career Opportunities</h4>
-                            <p class="mb-4 text-secondary fs-5">Our programs are crafted to equip you with skills and
-                                knowledge essential for exciting career opportunities ahead.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-xl-3">
-                    <div class="card border-0 border-bottom border-primary shadow-sm">
-                        <div class="card-body text-center p-4 p-xxl-5">
-                            <img src="img/commuication.png" class="w-50 " alt="nothing">
-                            <h4 class="mb-4">Global Learning Community</h4>
-                            <p class="mb-4 text-secondary fs-5">Empowering minds worldwide through collaborative education,
-                                fostering innovation for a brighter future.</p>
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </div>
     </section>

@@ -34,42 +34,44 @@
                             <a class="btn btn-primary" href="addcommetns.php">Add</a>
 
                         </div>
-                        <table class="table table-bordered overflow-x-scroll ">
-                            <thead>
-                                <tr>
+                        <div class="table-responsive ">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
 
-                                    <th>User Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Message</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                // Check if there are any results
-                                if (mysqli_num_rows($result) > 0) {
-                                    // Loop through each row of the result
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                ?>
-                                        <tr>
-                                            <td><?php echo $row['u_name']; ?></td>
-                                            <td><?php echo $row['u_email']; ?></td>
-                                            <td><?php echo $row['u_phone']; ?></td>
-                                            <td><?php echo $row['message']; ?></td>
-                                            <td>
-                                                <a class="btn btn-primary  my-1 " href="aditcomment.php?email=<?php echo $row['u_email']; ?>">Edit</a>
-                                                <a class="btn btn-danger my-1" href="deletecomments.php?email=<?php echo $row['u_email']; ?>">Delete</a>
-                                            </td>
-                                        </tr>
-                                <?php
+                                        <th>User Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Message</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    // Check if there are any results
+                                    if (mysqli_num_rows($result) > 0) {
+                                        // Loop through each row of the result
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                    ?>
+                                            <tr>
+                                                <td><?php echo $row['u_name']; ?></td>
+                                                <td><?php echo $row['u_email']; ?></td>
+                                                <td><?php echo $row['u_phone']; ?></td>
+                                                <td><?php echo $row['message']; ?></td>
+                                                <td>
+                                                    <a class="btn btn-primary  my-1 " href="aditcomment.php?email=<?php echo $row['u_email']; ?>">Edit</a>
+                                                    <a class="btn btn-danger my-1" href="deletecomments.php?email=<?php echo $row['u_email']; ?>">Delete</a>
+                                                </td>
+                                            </tr>
+                                    <?php
+                                        }
+                                    } else {
+                                        echo "<tr><td colspan='7'>No comments found</td></tr>";
                                     }
-                                } else {
-                                    echo "<tr><td colspan='7'>No comments found</td></tr>";
-                                }
-                                ?>
-                            </tbody>
-                        </table>
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

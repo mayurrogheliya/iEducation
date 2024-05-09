@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['uemail'])) {
-    header("location: home.php");
+    header("location: index.php");
     exit();
 }
 ?>
@@ -27,10 +27,10 @@ if (isset($_SESSION['uemail'])) {
         $count = mysqli_num_rows($result);
         if ($count == 1) {
             while ($a = mysqli_fetch_array($result)) {
-                $status = $a[7];
+                $status = $a[6];
                 if ($status == "Active") {
                     $_SESSION['uemail'] = $email;
-                    header("Location: home.php");
+                    header("Location: index.php");
                 } else {
                     $active_err = "Account is not activated. Kindly activate your account by clicking on the activation link sent to your email address";
                 }

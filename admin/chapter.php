@@ -66,13 +66,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         date_default_timezone_set("Asia/Kolkata");
         $s_time = date("Y-m-d G:i:s");
         // Insert data into the database
-        $query = "INSERT INTO chapters (chapter_name, chapter_description, chapter_pdf, c_name, p_time) VALUES ('$chapterName', '$chapterDescription', '$pdfName', '$cname','$s_time')";
+        // Prepare and bind
+        $stmt = $con->prepare("INSERT INTO chapters (chapter_name, chapter_description, chapter_pdf, c_name, p_time) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssss", $chapterName, $chapterDescription, $pdfName, $cname, $s_time);
+
         // Execute the query
-        if (mysqli_query($con, $query)) {
+        if ($stmt->execute()) {
             echo "Record inserted successfully";
         } else {
-            echo "Error: " . $query . "<br>" . mysqli_error($con);
+            echo "Error: " . $stmt->error;
         }
+
+        // Close the prepared statement
+        $stmt->close();
     }
 
     // Redirect to prevent form resubmission

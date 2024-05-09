@@ -13,7 +13,7 @@ if (isset($_POST['btn'])) {
     $result = mysqli_query($con, $q);
 
     while ($row = mysqli_fetch_array($result)) {
-        if ($otp == $row[4]) {
+        if ($otp == $row[3]) {
 ?>
             <script>
                 window.location.href = "newPassword.php";

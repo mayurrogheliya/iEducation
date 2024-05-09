@@ -34,13 +34,13 @@ require_once "session.php";
                 </a>
             </li>
             <li class="nav-item list-group-item">
-                <a class="nav-link" href="#" style="font-size: 20px;">
-                    <i class="fas fa-cog" style="padding-right: 10px; font-size: 25px;"></i>Settings
+                <a class="nav-link" href="review.php" style="font-size: 20px;">
+                    <i class="fas fa-star" style="padding-right: 10px; font-size: 25px;"></i>Review
                 </a>
             </li>
             <li class="nav-item list-group-item">
-                <a class="nav-link" href="#" style="font-size: 20px;">
-                    <i class="fas fa-question-circle" style="padding-right: 10px; font-size: 25px;"></i>Help and Support
+                <a class="nav-link" href="adminQuiz.php" style="font-size: 20px;">
+                    <i class="fas fa-question-circle" style="padding-right: 10px; font-size: 25px;"></i>Quiz
                 </a>
             </li>
         </ul>

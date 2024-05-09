@@ -30,7 +30,7 @@
 
     <div class="container-fluid mt-2">
         <div class="row">
-            <div class="col-md-3 mb-2">
+            <div class="col-md-3">
                 <?php
                 include_once("header.php");
                 ?>

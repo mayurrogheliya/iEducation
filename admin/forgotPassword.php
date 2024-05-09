@@ -48,14 +48,14 @@ if (isset($_POST['submit'])) {
                     $mail->isSMTP();
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
-                    $mail->Username = 'mrogheliya585@rku.ac.in';
+                    $mail->Username = 'mayurrogheliya@gmail.com';
                     $mail->Password = '';
                     $mail->SMTPSecure = 'ssl';
                     $mail->Port = 465;
                     // $mail->SMTPDebug = 2;
                     $_SESSION['forgot_email'] = $email;
                     $_SESSION['forgot_token'] = $token;
-                    $mail->setFrom('mrogheliya585@rku.ac.in', 'Mayur Rogheliya');
+                    $mail->setFrom('mayurrogheliya@gmail.com', 'Mayur Rogheliya');
                     while ($row = mysqli_fetch_array($result)) {
                         $mail->addAddress($email, $row[1]);
                     }

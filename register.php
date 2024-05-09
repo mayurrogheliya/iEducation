@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['uemail'])) {
-    header("location: home.php");
+    header("location: index.php");
 }
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -50,18 +50,18 @@ if (isset($_POST['btn'])) {
                     $mail->isSMTP();
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
-                    $mail->Username = 'mrogheliya585@rku.ac.in';
+                    $mail->Username = 'mayurrogheliya@gmail.com';
                     $mail->Password = '';
                     $mail->SMTPSecure = 'ssl';
                     $mail->Port = 465;
 
-                    $mail->setFrom('mrogheliya585@rku.ac.in', 'Mayur Rogheliya');
+                    $mail->setFrom('mayurrogheliya@gmail.com', 'Mayur Rogheliya');
                     $mail->addAddress($email, $name);
 
                     $mail->isHTML(true);
                     $mail->Subject = 'Account Verification';
                     $mail->Body = 'Congratulations! ' . $name . ' Your account has been created successfully. This email is for your account verification. <br> Kindly click on the link below to verify your account. You will be able to login into your account only after account verification. <br>
-            <a href="http://localhost/web%20programming/iEducation/verify_account.php?email=' . $email . '&token=' . $token . '">Click here to verify your account</a>';
+            <a class="btn btn-primary" href="http://localhost/web%20programming/iEducation/verify_account.php?email=' . $email . '&token=' . $token . '">Click here to verify your account</a>';
 
                     if ($mail->send()) {
                         setcookie("success", "Registration Successfull. Activation mail is sent to your registered email account. Kindly activate your account to login.", time() + 2, "/");
@@ -129,17 +129,6 @@ if (isset($_POST['btn'])) {
                                         </div>
                                     </div>
                                     <p style="padding-left: 45px;" id="phone_err"></p>
-                                    <!-- gender -->
-                                    <!-- <div class="d-flex flex-row align-items-center">
-                                        <div>
-                                            <i class="fa fa-venus-mars fa-lg me-3 fa-fw "></i>
-                                        </div>
-                                        <div class="form-outline flex-fill ">
-                                            <input type="radio" name="gender" value="male">Male
-                                            <input type="radio" name="gender" value="female">Female
-                                        </div>
-                                    </div> -->
-                                    <p style="padding-left: 45px;" id="gender_err"></p>
                                     <!-- email -->
                                     <div class="d-flex flex-row  align-items-center">
                                         <div>

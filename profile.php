@@ -140,6 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             document.getElementById("editProfileBtn").style.display = "none";
             document.getElementById("deleteProfileBtn").style.display = "none";
         });
+
         document.getElementById("changeImageButton").addEventListener("click", function() {
             document.getElementById("new_image").click();
         });

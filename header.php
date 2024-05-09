@@ -29,7 +29,7 @@
                     // Loop through each row of the result
                     while ($row = mysqli_fetch_assoc($result)) {
                 ?>
-                        <a class="nav-link" href="home.php">
+                        <a class="nav-link" href="index.php">
                             <h1 class="text-dark"><?php echo $row['websiteName']; ?></h1>
                         </a>
                 <?php
@@ -47,7 +47,7 @@
 
                         <!-- Conditionally show login/register or logout -->
                         <li class="nav-item fs-4">
-                            <a class="nav-link home" href="home.php">Home</a>
+                            <a class="nav-link home" href="index.php">Home</a>
                         </li>
                         <li class="nav-item fs-4 mycolor">
                             <a class="nav-link course" href="course.php">Course</a>
@@ -75,9 +75,33 @@
 
                 <!-- User Profile Section -->
                 <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarNav">
-                    <button type="button" class="btn" style="border:none;">
+                    <button type="button" class="btn position-relative" style="border:none;" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <img src="img/notification.png" class="w-50 h-50" alt="notification">
+                        <!-- <span class="position-absolute top-5 start-50 translate-middle p-2 bg-danger border border-light rounded-circle">
+                            <span class="visually-hidden">New alerts</span>
+                        </span> -->
                     </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Notification</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="alert alert-light alert-dismissible fade show" role="alert">
+                                        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle justify-content-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100px;">
