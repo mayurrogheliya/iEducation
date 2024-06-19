@@ -19,4 +19,4 @@ Welcome to iEducation, a dynamic educational platform built using HTML, CSS, Boo
 - PHP
 - MySQL
 
-([ieducation.great-site.net](http://ieducation.great-site.net/))
+[Click here](http://ieducation.great-site.net/)
